@@ -4,7 +4,7 @@ import random
 from cm_api.api_client import ApiResource
 from cm_api.endpoints.hosts import *
 
-def setup_yarn():
+def yarnSetup():
     """
     Yarn
     > Creating MR2 job history directory

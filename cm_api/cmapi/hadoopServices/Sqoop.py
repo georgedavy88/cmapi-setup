@@ -2,7 +2,7 @@
 from cm_api.api_client import ApiResource
 from cm_api.endpoints.hosts import *
 
-def setup_sqoop():
+def sqoopSetup():
     """
     Sqoop 2
     > Creating Sqoop 2 user directory

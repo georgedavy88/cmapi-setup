@@ -4,7 +4,7 @@ import random
 from cm_api.api_client import ApiResource
 from cm_api.endpoints.hosts import *
 
-def setup_impala(enable_llama=False):
+def impalaSetup(enable_llama=False):
     """
     Impala
     > Creating Impala user directory

@@ -4,7 +4,7 @@ import random
 from cm_api.api_client import ApiResource
 from cm_api.endpoints.hosts import *
 
-def setup_hdfs():
+def hdfsSetup():
     """
     HDFS
     > Checking if the name directories of the NameNode are empty. Formatting HDFS only if empty.

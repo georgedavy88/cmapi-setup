@@ -2,7 +2,7 @@
 from cm_api.api_client import ApiResource
 from cm_api.endpoints.hosts import *
 
-def setup_flume():
+def flumeSetup():
     api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password, version=cmx.api_version)
     cluster = api.get_cluster(cmx.cluster_name)
     service_type = "FLUME"

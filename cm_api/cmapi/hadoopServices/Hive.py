@@ -5,7 +5,7 @@ import random
 from cm_api.api_client import ApiResource
 from cm_api.endpoints.hosts import *
 
-def setup_hive():
+def hiveSetup():
     """
     Hive
     > Creating Hive Metastore Database

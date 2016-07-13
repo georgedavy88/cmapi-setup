@@ -2,7 +2,7 @@
 from cm_api.api_client import ApiResource
 from cm_api.endpoints.hosts import *
 
-def setup_oozie():
+def oozieSetup():
     """
     Oozie
     > Creating Oozie database

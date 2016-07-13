@@ -3,7 +3,7 @@
 from cm_api.api_client import ApiResource
 from cm_api.endpoints.hosts import *
 
-def setup_hue():
+def hueSetup():
     """
     Hue
     Starting Hue Service
