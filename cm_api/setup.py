@@ -3,6 +3,9 @@
 from cmapi import *
 from cm_api.api_client import ApiResource
 
+global cmx
+global check, cdh, manager
+
 def main():
     parse_options()
     init_cluster()

@@ -9,8 +9,6 @@ from cm_api.endpoints.hosts import *
 from cm_api.endpoints.services import ApiService
 
 def parse_options():
-    global cmx
-    global check, cdh, manager
 
     cmx_config_options = {'ssh_root_password': None, 'ssh_root_user': 'root', 'ssh_private_key': None,
                           'cluster_name': 'Cluster 1', 'cluster_version': 'CDH5',
