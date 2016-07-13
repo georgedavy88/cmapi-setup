@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-global cmx
-global check
-global cdh
-global manager
+global cmx      = None
+global check    = None
+global cdh      = None
+global manager  = None

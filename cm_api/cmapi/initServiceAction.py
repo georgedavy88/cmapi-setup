@@ -3,9 +3,6 @@ import socket
 import hashlib
 import os
 import sys
-from initVar import *
-from initParser import *
-from initDeploy import *
 from cm_api.api_client import ApiResource, ApiException
 from cm_api.endpoints.hosts import *
 from cm_api.endpoints.services import ApiServiceSetupInfo, ApiService
