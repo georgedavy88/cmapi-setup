@@ -111,7 +111,7 @@ class ManagementActions:
         """
         apiR = ApiResource(server_host=api.cm_server, username=api.username, password=api.password,
                           version=api.api_version)
-        cm = api.get_cloudera_manager()
+        cm = apiR.get_cloudera_manager()
         try:
             return bool(cm.get_license().uuid)
         except ApiException as err:
@@ -125,8 +125,8 @@ class ManagementActions:
         """
         apiR = ApiResource(server_host=api.cm_server, username=api.username, password=api.password,
                           version=api.api_version)
-        cm = api.get_cloudera_manager()
-        if api.license_file and not manager.licensed():
+        cm = apiR.get_cloudera_manager()
+        if apiR.license_file and not manager.licensed():
             print "Upload license"
             with open(api.license_file, 'r') as f:
                 license_contents = f.read()

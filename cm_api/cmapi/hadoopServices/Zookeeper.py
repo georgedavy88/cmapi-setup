@@ -4,15 +4,15 @@ import random
 from cm_api.api_client import ApiResource
 from cm_api.endpoints.hosts import *
 
-def zookeeperSetup():
+def setup_zookeeper():
     """
     Zookeeper
     > Waiting for ZooKeeper Service to initialize
     Starting ZooKeeper Service
     :return:
     """
-    apiR = ApiResource(server_host=api.cm_server, username=api.username, password=api.password, version=api.api_version)
-    cluster = apiR.get_cluster(api.cluster_name)
+    api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password, version=cmx.api_version)
+    cluster = api.get_cluster(cmx.cluster_name)
     service_type = "ZOOKEEPER"
     if cdh.get_service_type(service_type) is None:
         print "> %s" % service_type

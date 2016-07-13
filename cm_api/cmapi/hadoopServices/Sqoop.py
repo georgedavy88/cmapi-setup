@@ -2,7 +2,7 @@
 from cm_api.api_client import ApiResource
 from cm_api.endpoints.hosts import *
 
-def sqoopSetup():
+def setup_sqoop():
     """
     Sqoop 2
     > Creating Sqoop 2 user directory
@@ -10,8 +10,8 @@ def sqoopSetup():
     Starting Sqoop 2 Service
     :return:
     """
-    apiR = ApiResource(server_host=api.cm_server, username=api.username, password=api.password, version=api.api_version)
-    cluster = apiR.get_cluster(api.cluster_name)
+    api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password, version=cmx.api_version)
+    cluster = api.get_cluster(cmx.cluster_name)
     service_type = "SQOOP"
     if cdh.get_service_type(service_type) is None:
         print "> %s" % service_type
@@ -34,19 +34,19 @@ def sqoopSetup():
         check.status_for_command("Creating Sqoop 2 user directory", service.create_sqoop_user_dir())
         # CDH Version check if greater than 5.3.0
         vc = lambda v: tuple(map(int, (v.split("."))))
-        if vc(api.parcel[0]['version'].split('-')[0]) >= vc("5.3.0"):
+        if vc(cmx.parcel[0]['version'].split('-')[0]) >= vc("5.3.0"):
             check.status_for_command("Creating Sqoop 2 Database", service._cmd('SqoopCreateDatabase'))
             # This service is started later on
             # check.status_for_command("Starting Sqoop 2 Service", service.start())
 
 
-def sqoopclientSetup():
+def setup_sqoop_client():
     """
     Sqoop Client
     :return:
     """
-    apiR = ApiResource(server_host=api.cm_server, username=api.username, password=api.password, version=api.api_version)
-    cluster = api.get_cluster(api.cluster_name)
+    api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password, version=cmx.api_version)
+    cluster = api.get_cluster(cmx.cluster_name)
     service_type = "SQOOP_CLIENT"
     if cdh.get_service_type(service_type) is None:
         print "> %s" % service_type

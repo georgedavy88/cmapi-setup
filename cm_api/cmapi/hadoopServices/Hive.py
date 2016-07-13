@@ -5,7 +5,7 @@ import random
 from cm_api.api_client import ApiResource
 from cm_api.endpoints.hosts import *
 
-def hiveSetup():
+def setup_hive():
     """
     Hive
     > Creating Hive Metastore Database
@@ -15,8 +15,8 @@ def hiveSetup():
     Starting Hive Service
     :return:
     """
-    apiR = ApiResource(server_host=api.cm_server, username=api.username, password=api.password, version=api.api_version)
-    cluster = apiR.get_cluster(api.cluster_name)
+    api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password, version=cmx.api_version)
+    cluster = api.get_cluster(cmx.cluster_name)
     service_type = "HIVE"
     if cdh.get_service_type(service_type) is None:
         print "> %s" % service_type
@@ -28,7 +28,7 @@ def hiveSetup():
 
         # Service-Wide
         # hive_metastore_database_host: Assuming embedded DB is running from where embedded-db is located.
-        service_config = {"hive_metastore_database_host": socket.getfqdn(api.cm_server),
+        service_config = {"hive_metastore_database_host": socket.getfqdn(cmx.cm_server),
                           "hive_metastore_database_user": "hive",
                           "hive_metastore_database_name": "hive",
                           "hive_metastore_database_password": "cloudera",
