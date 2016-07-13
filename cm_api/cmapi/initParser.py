@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import socket
 import urllib2
+from initVar import *
 from initServiceAction import *
 from optparse import OptionParser
 from cm_api.api_client import ApiException
@@ -8,8 +9,6 @@ from cm_api.http_client import HttpClient
 from cm_api.endpoints.hosts import *
 from cm_api.endpoints.services import ApiService
 
-global cmx
-global check, cdh, manager
 
 def parse_options():
 

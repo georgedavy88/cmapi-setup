@@ -2,7 +2,7 @@
 import socket
 import urllib2
 import sys
-
+from initVar import *
 from cm_api.api_client import ApiResource
 from cm_api.endpoints.hosts import *
 
