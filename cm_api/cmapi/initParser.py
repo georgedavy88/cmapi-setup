@@ -8,6 +8,9 @@ from cm_api.http_client import HttpClient
 from cm_api.endpoints.hosts import *
 from cm_api.endpoints.services import ApiService
 
+global cmx
+global check, cdh, manager
+
 def parse_options():
 
     cmx_config_options = {'ssh_root_password': None, 'ssh_root_user': 'root', 'ssh_private_key': None,
