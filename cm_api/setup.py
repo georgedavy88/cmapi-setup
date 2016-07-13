@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 #Author - George Davy
 from cmapi import *
+from cmapi import initParser
+from cmapi import initServiceAction
+from cmapi import initDeploy
 from cm_api.api_client import ApiResource
 
 def main():
