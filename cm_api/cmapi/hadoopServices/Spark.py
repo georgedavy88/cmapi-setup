@@ -48,7 +48,7 @@ def sparkSetup():
         # check.status_for_command("Starting Spark Service", service.start())
 
 
-def setup_spark_on_yarn():
+def sparkonyarnSetup():
     """
     Sqoop Client
     :return:

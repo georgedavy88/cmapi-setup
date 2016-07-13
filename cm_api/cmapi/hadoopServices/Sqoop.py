@@ -40,7 +40,7 @@ def sqoopSetup():
             # check.status_for_command("Starting Sqoop 2 Service", service.start())
 
 
-def setup_sqoop_client():
+def sqoopclientSetup():
     """
     Sqoop Client
     :return:
