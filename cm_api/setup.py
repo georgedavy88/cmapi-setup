@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 #Author - George Davy
+global cmx
+global check, cdh, manager
+
 from cmapi import *
 from cm_api.api_client import ApiResource
 
-global cmx
-global check, cdh, manager
+
 
 def main():
     parse_options()
