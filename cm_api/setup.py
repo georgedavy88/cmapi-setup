@@ -38,18 +38,18 @@ def main():
     if initVar.cmx.license_file:
         initVar.manager.upload_license()
 
-    setup_zookeeper()
-    setup_hdfs()
-    setup_hbase()
-    setup_yarn()
-    setup_flume()
-    setup_spark_on_yarn()
-    setup_hive()
-    setup_impala()
-    setup_oozie()
-    setup_hue()
+    zookeeperSetup()
+    hdfsSetup()
+    hbaseSetup()
+    yarnSetup()
+    flumeSetup()
+    sparkonyarnSetup()
+    hiveSetup()
+    impalaSetup()
+    oozieSetup()
+    hueSetup()
 
-    cdh.restart_cluster()
+    initVar.cdh.restart_cluster()
 
 if __name__ == "__main__":
     main()
