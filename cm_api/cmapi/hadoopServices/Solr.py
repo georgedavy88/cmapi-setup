@@ -19,7 +19,7 @@ def solrSetup():
         print "Create %s service" % service_name
         cluster.create_service(service_name, service_type)
         service = cluster.get_service(service_name)
-        hosts = manager.get_hosts()
+        hosts = initVar.manager.get_hosts()
 
         # Service-Wide
         service.update_config(cdh.dependencies_for(service))
@@ -29,7 +29,7 @@ def solrSetup():
             if rcg.roleType == "SOLR_SERVER":
                 cdh.create_service_role(service, rcg.roleType, [x for x in hosts if x.id == 0][0])
             if rcg.roleType == "GATEWAY":
-                for host in manager.get_hosts(include_cm_host=True):
+                for host in initVar.manager.get_hosts(include_cm_host=True):
                     cdh.create_service_role(service, rcg.roleType, host)
 
         # Example of deploy_client_config. Recommended to Deploy Cluster wide client config.

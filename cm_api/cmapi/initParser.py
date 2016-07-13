@@ -144,13 +144,13 @@ def parse_options():
 
     # Management services password. They are required when adding Management services
     initVar.manager = ManagementActions
-    if not (bool(manager.get_mgmt_password("ACTIVITYMONITOR"))
-            and bool(manager.get_mgmt_password("REPORTSMANAGER"))):
-        cmx_config_options['amon_password'] = bool(manager.get_mgmt_password("ACTIVITYMONITOR"))
-        cmx_config_options['rman_password'] = bool(manager.get_mgmt_password("REPORTSMANAGER"))
+    if not (bool(initVar.manager.get_mgmt_password("ACTIVITYMONITOR"))
+            and bool(initVar.manager.get_mgmt_password("REPORTSMANAGER"))):
+        cmx_config_options['amon_password'] = bool(initVar.manager.get_mgmt_password("ACTIVITYMONITOR"))
+        cmx_config_options['rman_password'] = bool(initVar.manager.get_mgmt_password("REPORTSMANAGER"))
     else:
-        cmx_config_options['amon_password'] = manager.get_mgmt_password("ACTIVITYMONITOR")
-        cmx_config_options['rman_password'] = manager.get_mgmt_password("REPORTSMANAGER")
+        cmx_config_options['amon_password'] = initVar.manager.get_mgmt_password("ACTIVITYMONITOR")
+        cmx_config_options['rman_password'] = initVar.manager.get_mgmt_password("REPORTSMANAGER")
 
     initVar.cmx = type('', (), cmx_config_options)
     initVar.check = ActiveCommands()

@@ -18,7 +18,7 @@ def hueSetup():
         print "Create %s service" % service_name
         cluster.create_service(service_name, service_type)
         service = cluster.get_service(service_name)
-        hosts = manager.get_hosts()
+        hosts = initVar.manager.get_hosts()
 
         # Service-Wide
         service.update_config(cdh.dependencies_for(service))

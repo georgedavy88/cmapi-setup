@@ -52,7 +52,7 @@ class ManagementActions:
         """
         print "> Setup Management Services"
         self._cm.update_config({"TSQUERY_STREAMS_LIMIT": 1000})
-        hosts = manager.get_hosts(include_cm_host=True)
+        hosts = initVar.manager.get_hosts(include_cm_host=True)
         # pick hostId that match the ipAddress of cm_server
         # mgmt_host may be empty then use the 1st host from the -w
         try:
@@ -89,13 +89,13 @@ class ManagementActions:
             elif group.roleType == "SERVICEMONITOR":
                 group.update_config({"firehose_non_java_memory_bytes": "1610612736",
                                      "firehose_heapsize": "268435456"})
-            elif group.roleType == "NAVIGATOR" and manager.licensed():
+            elif group.roleType == "NAVIGATOR" and initVar.manager.licensed():
                 group.update_config({"navigator_heapsize": "492830720"})
-            elif group.roleType == "NAVIGATORMETASERVER" and manager.licensed():
+            elif group.roleType == "NAVIGATORMETASERVER" and initVar.manager.licensed():
                 group.update_config({"navigator_heapsize": "1232076800"})
-            elif group.roleType == "NAVIGATORMETADATASERVER" and manager.licensed():
+            elif group.roleType == "NAVIGATORMETADATASERVER" and initVar.manager.licensed():
                 group.update_config({})
-            elif group.roleType == "REPORTSMANAGER" and manager.licensed():
+            elif group.roleType == "REPORTSMANAGER" and initVar.manager.licensed():
                 group.update_config({"headlamp_database_host": "%s:7432" % socket.getfqdn(initVar.cmx.cm_server),
                                      "headlamp_database_name": "rman",
                                      "headlamp_database_password": initVar.cmx.rman_password,
@@ -126,7 +126,7 @@ class ManagementActions:
         api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password,
                           version=initVar.cmx.api_version)
         cm = api.get_cloudera_manager()
-        if initVar.cmx.license_file and not manager.licensed():
+        if initVar.cmx.license_file and not initVar.manager.licensed():
             print "Upload license"
             with open(initVar.cmx.license_file, 'r') as f:
                 license_contents = f.read()
@@ -145,7 +145,7 @@ class ManagementActions:
         api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password,
                           version=initVar.cmx.api_version)
         print "def begin_trial"
-        if not manager.licensed():
+        if not initVar.manager.licensed():
             try:
                 api.post("/cm/trial/begin")
                 # REPORTSMANAGER required after applying license

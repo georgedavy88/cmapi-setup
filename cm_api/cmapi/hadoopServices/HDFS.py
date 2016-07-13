@@ -21,7 +21,7 @@ def hdfsSetup():
         print "Create %s service" % service_name
         cluster.create_service(service_name, service_type)
         service = cluster.get_service(service_name)
-        hosts = manager.get_hosts()
+        hosts = initVar.manager.get_hosts()
 
         # Service-Wide
         service_config = cdh.dependencies_for(service)
@@ -66,7 +66,7 @@ def hdfsSetup():
                 rcg.update_config({"dfs_client_use_trash": True})
 
         for role_type in ['DATANODE', 'GATEWAY']:
-            for host in manager.get_hosts(include_cm_host=(role_type == 'GATEWAY')):
+            for host in initVar.manager.get_hosts(include_cm_host=(role_type == 'GATEWAY')):
                 cdh.create_service_role(service, role_type, host)
 
         # Example of deploy_client_config. Recommended to Deploy Cluster wide client config.

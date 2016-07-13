@@ -20,7 +20,7 @@ def zookeeperSetup():
         print "Create %s service" % service_name
         cluster.create_service(service_name, service_type)
         service = cluster.get_service(service_name)
-        hosts = manager.get_hosts()
+        hosts = initVar.manager.get_hosts()
         service.update_config({"zookeeper_datadir_autocreate": False})
 
         # Role Config Group equivalent to Service Default Group

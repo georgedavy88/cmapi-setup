@@ -16,7 +16,7 @@ def mapreduceSetup():
         print "Create %s service" % service_name
         cluster.create_service(service_name, service_type)
         service = cluster.get_service(service_name)
-        hosts = manager.get_hosts()
+        hosts = initVar.manager.get_hosts()
 
         # Service-Wide
         service.update_config(cdh.dependencies_for(service))
@@ -39,7 +39,7 @@ def mapreduceSetup():
                 rcg.update_config({"mapred_reduce_tasks": "1", "mapred_submit_replication": "1"})
 
         for role_type in ['GATEWAY', 'TASKTRACKER']:
-            for host in manager.get_hosts(include_cm_host=(role_type == 'GATEWAY')):
+            for host in initVar.manager.get_hosts(include_cm_host=(role_type == 'GATEWAY')):
                 cdh.create_service_role(service, role_type, host)
 
                 # Example of deploy_client_config. Recommended to Deploy Cluster wide client config.

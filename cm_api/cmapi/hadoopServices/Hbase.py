@@ -20,7 +20,7 @@ def hbaseSetup():
         print "Create %s service" % service_name
         cluster.create_service(service_name, service_type)
         service = cluster.get_service(service_name)
-        hosts = manager.get_hosts()
+        hosts = initVar.manager.get_hosts()
 
         # Service-Wide
         service_config = {"hbase_enable_indexing": True, "hbase_enable_replication": True,
@@ -44,7 +44,7 @@ def hbaseSetup():
             cdh.create_service_role(service, role_type, random.choice(hosts))
 
         for role_type in ['GATEWAY', 'REGIONSERVER']:
-            for host in manager.get_hosts(include_cm_host=(role_type == 'GATEWAY')):
+            for host in initVar.manager.get_hosts(include_cm_host=(role_type == 'GATEWAY')):
                 cdh.create_service_role(service, role_type, host)
 
         # Example of deploy_client_config. Recommended to Deploy Cluster wide client config.

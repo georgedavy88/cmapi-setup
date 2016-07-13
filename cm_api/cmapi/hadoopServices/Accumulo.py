@@ -24,7 +24,7 @@ def accumuloSetup():
         print "Create %s service" % service_name
         cluster.create_service(service_name, service_type)
         service = cluster.get_service(service_name)
-        hosts = manager.get_hosts()
+        hosts = initVar.manager.get_hosts()
 
         # Deploy ACCUMULO16 Parcel
         parcel = [x for x in cluster.get_all_parcels() if x.product == 'ACCUMULO' and
@@ -53,7 +53,7 @@ def accumuloSetup():
             cdh.create_service_role(service, role_type, random.choice(hosts))
 
         # Create Accumulo gateway roles
-        for host in manager.get_hosts(include_cm_host=True):
+        for host in initVar.manager.get_hosts(include_cm_host=True):
             cdh.create_service_role(service, 'GATEWAY', host)
 
         print "Deploy Client Configuration"

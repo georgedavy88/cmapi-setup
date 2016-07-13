@@ -24,7 +24,7 @@ def hiveSetup():
         print "Create %s service" % service_name
         cluster.create_service(service_name, service_type)
         service = cluster.get_service(service_name)
-        hosts = manager.get_hosts()
+        hosts = initVar.manager.get_hosts()
 
         # Service-Wide
         # hive_metastore_database_host: Assuming embedded DB is running from where embedded-db is located.
@@ -47,7 +47,7 @@ def hiveSetup():
         for role_type in ['HIVEMETASTORE', 'HIVESERVER2']:
             cdh.create_service_role(service, role_type, random.choice(hosts))
 
-        for host in manager.get_hosts(include_cm_host=True):
+        for host in initVar.manager.get_hosts(include_cm_host=True):
             cdh.create_service_role(service, "GATEWAY", host)
 
         # Example of deploy_client_config. Recommended to Deploy Cluster wide client config.

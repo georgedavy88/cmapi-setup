@@ -22,7 +22,7 @@ def sparkSetup():
         print "Create %s service" % service_name
         cluster.create_service(service_name, service_type)
         service = cluster.get_service(service_name)
-        hosts = manager.get_hosts()
+        hosts = initVar.manager.get_hosts()
 
         # Service-Wide
         service.update_config(cdh.dependencies_for(service))
@@ -31,7 +31,7 @@ def sparkSetup():
         cdh.create_service_role(service, "SPARK_HISTORY_SERVER", random.choice(hosts))
 
         for role_type in ['GATEWAY', 'SPARK_WORKER']:
-            for host in manager.get_hosts(include_cm_host=(role_type == 'GATEWAY')):
+            for host in initVar.manager.get_hosts(include_cm_host=(role_type == 'GATEWAY')):
                 cdh.create_service_role(service, role_type, host)
 
         # Example of deploy_client_config. Recommended to Deploy Cluster wide client config.
@@ -62,7 +62,7 @@ def sparkonyarnSetup():
         print "Create %s service" % service_name
         cluster.create_service(service_name, service_type)
         service = cluster.get_service(service_name)
-        hosts = manager.get_hosts()
+        hosts = initVar.manager.get_hosts()
 
         # Service-Wide
         service.update_config(cdh.dependencies_for(service))
@@ -72,7 +72,7 @@ def sparkonyarnSetup():
 
         cdh.create_service_role(service, "SPARK_YARN_HISTORY_SERVER", random.choice(hosts))
 
-        for host in manager.get_hosts(include_cm_host=True):
+        for host in initVar.manager.get_hosts(include_cm_host=True):
             cdh.create_service_role(service, "GATEWAY", host)
 
         # Example of deploy_client_config. Recommended to Deploy Cluster wide client config.
