@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import socket
 import urllib2
-from initVar
+import initVar
 from initServiceAction import *
 from optparse import OptionParser
 from cm_api.api_client import ApiException
