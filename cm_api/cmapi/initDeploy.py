@@ -3,7 +3,7 @@ import re
 import socket
 import urllib2
 import sys
-import hadoopServices
+from hadoopServices import initVar
 from cm_api.api_client import ApiResource
 from cm_api.endpoints.hosts import *
 

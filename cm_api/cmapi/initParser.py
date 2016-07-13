@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 import socket
 import urllib2
-import hadoopServices
 from initServiceAction import *
+from hadoopServices import initVar
 from optparse import OptionParser
 from cm_api.api_client import ApiException
 from cm_api.http_client import HttpClient
