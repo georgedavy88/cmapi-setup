@@ -400,8 +400,8 @@ class ServiceActions:
 
 class ActiveCommands:
     def __init__(self):
-        self._api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password,
-                                version=cmx.api_version)
+        self._api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password,
+                                version=initVar.cmx.api_version)
 
     def status_for_command(self, message, command):
         """
