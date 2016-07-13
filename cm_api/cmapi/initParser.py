@@ -152,7 +152,7 @@ def parse_options():
         cmx_config_options['amon_password'] = manager.get_mgmt_password("ACTIVITYMONITOR")
         cmx_config_options['rman_password'] = manager.get_mgmt_password("REPORTSMANAGER")
 
-    cmx = type('', (), cmx_config_options)
+    initVar.cmx = type('', (), cmx_config_options)
     check = ActiveCommands()
     cdh = ServiceActions
     if cmx_config_options['cm_server'] and options.teardown:
