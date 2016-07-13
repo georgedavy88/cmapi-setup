@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #Author - George Davy
-import cmapi
+import cmapi import *
 from cm_api.api_client import ApiResource
 
 def main():
