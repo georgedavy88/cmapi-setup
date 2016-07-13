@@ -2,6 +2,7 @@
 #Author - George Davy
 from cmapi import *
 from cmapi.initDeploy import parcel_action
+from cmapi.hadoopServices import *
 from cm_api.api_client import ApiResource
 
 def main():
