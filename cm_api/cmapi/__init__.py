@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 from initDeploy                 import init_cluster
 from initDeploy                 import add_hosts_to_cluster
 from initDeploy                 import host_rack

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 from Hue         import hueSetup
 from HDFS        import hdfsSetup
 from Yarn        import yarnSetup
