@@ -56,7 +56,7 @@ class ManagementActions:
         # pick hostId that match the ipAddress of cm_server
         # mgmt_host may be empty then use the 1st host from the -w
         try:
-            mgmt_host = [x for x in hosts if x.ipAddress == socket.gethostbyname(cmx.cm_server)][0]
+            mgmt_host = [x for x in hosts if x.ipAddress == socket.gethostbyname(initVar.cmx.cm_server)][0]
         except IndexError:
             mgmt_host = [x for x in hosts if x.id == 0][0]
 
@@ -73,9 +73,9 @@ class ManagementActions:
         # now configure each role
         for group in [x for x in self._service.get_all_role_config_groups() if x.roleType in self._role_list]:
             if group.roleType == "ACTIVITYMONITOR":
-                group.update_config({"firehose_database_host": "%s:7432" % socket.getfqdn(cmx.cm_server),
+                group.update_config({"firehose_database_host": "%s:7432" % socket.getfqdn(initVar.cmx.cm_server),
                                      "firehose_database_user": "amon",
-                                     "firehose_database_password": cmx.amon_password,
+                                     "firehose_database_password": initVar.cmx.amon_password,
                                      "firehose_database_type": "postgresql",
                                      "firehose_database_name": "amon",
                                      "firehose_heapsize": "615514112"})
@@ -96,9 +96,9 @@ class ManagementActions:
             elif group.roleType == "NAVIGATORMETADATASERVER" and manager.licensed():
                 group.update_config({})
             elif group.roleType == "REPORTSMANAGER" and manager.licensed():
-                group.update_config({"headlamp_database_host": "%s:7432" % socket.getfqdn(cmx.cm_server),
+                group.update_config({"headlamp_database_host": "%s:7432" % socket.getfqdn(initVar.cmx.cm_server),
                                      "headlamp_database_name": "rman",
-                                     "headlamp_database_password": cmx.rman_password,
+                                     "headlamp_database_password": initVar.cmx.rman_password,
                                      "headlamp_database_type": "postgresql",
                                      "headlamp_database_user": "rman",
                                      "headlamp_heapsize": "492830720"})
@@ -109,8 +109,8 @@ class ManagementActions:
         Check if Cluster is licensed
         :return:
         """
-        api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password,
-                          version=cmx.api_version)
+        api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password,
+                          version=initVar.cmx.api_version)
         cm = api.get_cloudera_manager()
         try:
             return bool(cm.get_license().uuid)
@@ -123,12 +123,12 @@ class ManagementActions:
         Upload License file
         :return:
         """
-        api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password,
-                          version=cmx.api_version)
+        api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password,
+                          version=initVar.cmx.api_version)
         cm = api.get_cloudera_manager()
-        if cmx.license_file and not manager.licensed():
+        if initVar.cmx.license_file and not manager.licensed():
             print "Upload license"
-            with open(cmx.license_file, 'r') as f:
+            with open(initVar.cmx.license_file, 'r') as f:
                 license_contents = f.read()
                 print "Upload CM License: \n %s " % license_contents
                 cm.update_license(license_contents)
@@ -142,8 +142,8 @@ class ManagementActions:
         Begin Trial
         :return:
         """
-        api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password,
-                          version=cmx.api_version)
+        api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password,
+                          version=initVar.cmx.api_version)
         print "def begin_trial"
         if not manager.licensed():
             try:
@@ -193,13 +193,13 @@ class ManagementActions:
         attributes = {'id': None, 'hostId': None, 'hostname': None, 'md5host': None, 'ipAddress': None, }
         return a list of hosts
         """
-        api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password,
-                          version=cmx.api_version)
+        api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password,
+                          version=initVar.cmx.api_version)
 
-        w_hosts = set(enumerate(cmx.host_names))
-        if include_cm_host and socket.gethostbyname(cmx.cm_server) \
-                not in [socket.gethostbyname(x) for x in cmx.host_names]:
-            w_hosts.add((len(w_hosts), cmx.cm_server))
+        w_hosts = set(enumerate(initVar.cmx.host_names))
+        if include_cm_host and socket.gethostbyname(initVar.cmx.cm_server) \
+                not in [socket.gethostbyname(x) for x in initVar.cmx.host_names]:
+            w_hosts.add((len(w_hosts), initVar.cmx.cm_server))
 
         hosts = []
         for idx, host in w_hosts:
@@ -220,8 +220,8 @@ class ManagementActions:
         Restart Management Services
         :return:
         """
-        api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password,
-                          version=cmx.api_version)
+        api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password,
+                          version=initVar.cmx.api_version)
         mgmt = api.get_cloudera_manager().get_service()
 
         check.status_for_command("Stop Management services", mgmt.stop())
@@ -238,9 +238,9 @@ class ServiceActions:
 
     def __init__(self, *service_list):
         self._service_list = service_list
-        self._api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password,
-                                version=cmx.api_version)
-        self._cluster = self._api.get_cluster(cmx.cluster_name)
+        self._api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password,
+                                version=initVar.cmx.api_version)
+        self._cluster = self._api.get_cluster(initVar.cmx.cluster_name)
 
     def stop(self):
         self._action('stop')
@@ -265,9 +265,9 @@ class ServiceActions:
         :param name:
         :return:
         """
-        api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password,
-                          version=cmx.api_version)
-        cluster = api.get_cluster(cmx.cluster_name)
+        api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password,
+                          version=initVar.cmx.api_version)
+        cluster = api.get_cluster(initVar.cmx.cluster_name)
         try:
             service = [x for x in cluster.get_all_services() if x.type == name][0]
         except IndexError:
@@ -291,9 +291,9 @@ class ServiceActions:
         :param host.hostId, or ApiService:
         :return:
         """
-        api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password,
-                          version=cmx.api_version)
-        # cluster = api.get_cluster(cmx.cluster_name)
+        api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password,
+                          version=initVar.cmx.api_version)
+        # cluster = api.get_cluster(initVar.cmx.cluster_name)
         if isinstance(obj, str) or isinstance(obj, unicode):
             for role_name in [x.roleName for x in api.get_host(obj).roleRefs if 'GATEWAY' in x.roleName]:
                 service = cdh.get_service_type('GATEWAY')
@@ -327,14 +327,14 @@ class ServiceActions:
         Restart Cluster and Cluster wide deploy client config
         :return:
         """
-        api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password,
-                          version=cmx.api_version)
-        cluster = api.get_cluster(cmx.cluster_name)
-        print "Restart cluster: %s" % cmx.cluster_name
-        check.status_for_command("Stop %s" % cmx.cluster_name, cluster.stop())
-        check.status_for_command("Start %s" % cmx.cluster_name, cluster.start())
+        api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password,
+                          version=initVar.cmx.api_version)
+        cluster = api.get_cluster(initVar.cmx.cluster_name)
+        print "Restart cluster: %s" % initVar.cmx.cluster_name
+        check.status_for_command("Stop %s" % initVar.cmx.cluster_name, cluster.stop())
+        check.status_for_command("Start %s" % initVar.cmx.cluster_name, cluster.start())
         # Example deploying cluster wide Client Config
-        check.status_for_command("Deploy client config for %s" % cmx.cluster_name, cluster.deploy_client_config())
+        check.status_for_command("Deploy client config for %s" % initVar.cmx.cluster_name, cluster.deploy_client_config())
 
     @classmethod
     def dependencies_for(cls, service):

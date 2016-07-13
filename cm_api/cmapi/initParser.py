@@ -143,7 +143,7 @@ def parse_options():
             parser.error(msg_req_args + "-p/--ssh-root-password _OR_ -k/--ssh-private-key")
 
     # Management services password. They are required when adding Management services
-    manager = ManagementActions
+    initVar.manager = ManagementActions
     if not (bool(manager.get_mgmt_password("ACTIVITYMONITOR"))
             and bool(manager.get_mgmt_password("REPORTSMANAGER"))):
         cmx_config_options['amon_password'] = bool(manager.get_mgmt_password("ACTIVITYMONITOR"))
@@ -153,8 +153,8 @@ def parse_options():
         cmx_config_options['rman_password'] = manager.get_mgmt_password("REPORTSMANAGER")
 
     initVar.cmx = type('', (), cmx_config_options)
-    check = ActiveCommands()
-    cdh = ServiceActions
+    initVar.check = ActiveCommands()
+    initVar.cdh = ServiceActions
     if cmx_config_options['cm_server'] and options.teardown:
         if options.teardown.lower() in ['remove_cluster', 'keep_cluster']:
             teardown(keep_cluster=(options.teardown.lower() == 'keep_cluster'))

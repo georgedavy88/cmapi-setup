@@ -15,8 +15,8 @@ def hiveSetup():
     Starting Hive Service
     :return:
     """
-    api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password, version=cmx.api_version)
-    cluster = api.get_cluster(cmx.cluster_name)
+    api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password, version=initVar.cmx.api_version)
+    cluster = api.get_cluster(initVar.cmx.cluster_name)
     service_type = "HIVE"
     if cdh.get_service_type(service_type) is None:
         print "> %s" % service_type
@@ -28,7 +28,7 @@ def hiveSetup():
 
         # Service-Wide
         # hive_metastore_database_host: Assuming embedded DB is running from where embedded-db is located.
-        service_config = {"hive_metastore_database_host": socket.getfqdn(cmx.cm_server),
+        service_config = {"hive_metastore_database_host": socket.getfqdn(initVar.cmx.cm_server),
                           "hive_metastore_database_user": "hive",
                           "hive_metastore_database_name": "hive",
                           "hive_metastore_database_password": "cloudera",

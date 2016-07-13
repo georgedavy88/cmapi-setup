@@ -12,7 +12,7 @@ def init_cluster():
     :return:
     """
     print "> Initialise Cluster"
-    api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password, version=cmx.api_version)
+    api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password, version=initVar.cmx.api_version)
     # Update Cloudera Manager configuration
     cm = api.get_cloudera_manager()
 
@@ -27,15 +27,15 @@ def init_cluster():
             raise Exception("Invalid manifest.json")
 
     # Install CDH5 latest version
-    repo_url = ["%s/cdh5/parcels/%s" % (cmx.archive_url, cmx.cdh_version)]
+    repo_url = ["%s/cdh5/parcels/%s" % (initVar.cmx.archive_url, initVar.cmx.cdh_version)]
     print "CDH5 Parcel URL: %s" % repo_url[0]
-    cmx.parcel.append(manifest_to_dict(repo_url[0] + "/manifest.json"))
+    initVar.cmx.parcel.append(manifest_to_dict(repo_url[0] + "/manifest.json"))
 
     # Install GPLEXTRAS5 to match CDH5 version
     repo_url.append('%s/gplextras5/parcels/%s' %
-                    (cmx.archive_url, cmx.parcel[0]['version'].split('-')[0]))
+                    (initVar.cmx.archive_url, initVar.cmx.parcel[0]['version'].split('-')[0]))
     print "GPL Extras parcel URL: %s" % repo_url[1]
-    cmx.parcel.append(manifest_to_dict(repo_url[1] + "/manifest.json"))
+    initVar.cmx.parcel.append(manifest_to_dict(repo_url[1] + "/manifest.json"))
 
     cm.update_config({"REMOTE_PARCEL_REPO_URLS": "http://archive.cloudera.com/impala/parcels/latest/,"
                                                  "http://archive.cloudera.com/search/parcels/latest/,"
@@ -45,11 +45,11 @@ def init_cluster():
                                                  "%s" % ",".join([url for url in repo_url if url]),
                       "PHONE_HOME": False, "PARCEL_DISTRIBUTE_RATE_LIMIT_KBS_PER_SECOND": "102400"})
 
-    if cmx.cluster_name in [x.name for x in api.get_all_clusters()]:
-        print "Cluster name: '%s' already exists" % cmx.cluster_name
+    if initVar.cmx.cluster_name in [x.name for x in api.get_all_clusters()]:
+        print "Cluster name: '%s' already exists" % initVar.cmx.cluster_name
     else:
-        print "Creating cluster name '%s'" % cmx.cluster_name
-        api.create_cluster(name=cmx.cluster_name, version=cmx.cluster_version)
+        print "Creating cluster name '%s'" % initVar.cmx.cluster_name
+        api.create_cluster(name=initVar.cmx.cluster_name, version=initVar.cmx.cluster_version)
 
 
 def add_hosts_to_cluster():
@@ -57,24 +57,24 @@ def add_hosts_to_cluster():
     Add hosts to cluster
     :return:
     """
-    print "> Add hosts to Cluster: %s" % cmx.cluster_name
-    api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password, version=cmx.api_version)
-    cluster = api.get_cluster(cmx.cluster_name)
+    print "> Add hosts to Cluster: %s" % initVar.cmx.cluster_name
+    api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password, version=initVar.cmx.api_version)
+    cluster = api.get_cluster(initVar.cmx.cluster_name)
     cm = api.get_cloudera_manager()
 
     # deploy agents into host_list
-    host_list = list(set([socket.getfqdn(x) for x in cmx.host_names] + [socket.getfqdn(cmx.cm_server)]) -
+    host_list = list(set([socket.getfqdn(x) for x in initVar.cmx.host_names] + [socket.getfqdn(initVar.cmx.cm_server)]) -
                      set([x.hostname for x in api.get_all_hosts()]))
     if host_list:
-        cmd = cm.host_install(user_name=cmx.ssh_root_user, host_names=host_list,
-                              password=cmx.ssh_root_password, private_key=cmx.ssh_private_key, unlimited_jce=True)
+        cmd = cm.host_install(user_name=initVar.cmx.ssh_root_user, host_names=host_list,
+                              password=initVar.cmx.ssh_root_password, private_key=initVar.cmx.ssh_private_key, unlimited_jce=True)
 
         # TODO: Temporary fix to flag for unlimited strength JCE policy files installation (If unset, defaults to false)
-        # host_install_args = {"userName": cmx.ssh_root_user, "hostNames": host_list, "password": cmx.ssh_root_password,
-        #                     "privateKey": cmx.ssh_private_key, "unlimitedJCE": True}
+        # host_install_args = {"userName": initVar.cmx.ssh_root_user, "hostNames": host_list, "password": initVar.cmx.ssh_root_password,
+        #                     "privateKey": initVar.cmx.ssh_private_key, "unlimitedJCE": True}
         # cmd = cm._cmd('hostInstall', data=host_install_args)
         print "Installing host(s) to cluster '%s' - [ http://%s:7180/cmf/command/%s/details ]" % \
-              (socket.getfqdn(cmx.cm_server), cmx.cm_server, cmd.id)
+              (socket.getfqdn(initVar.cmx.cm_server), initVar.cmx.cm_server, cmd.id)
         check.status_for_command("Hosts: %s " % host_list, cmd)
 
     hosts = []
@@ -84,7 +84,7 @@ def add_hosts_to_cluster():
             hosts.append(host.hostId)
 
     if hosts:
-        print "Adding hostId(s) to '%s'" % cmx.cluster_name
+        print "Adding hostId(s) to '%s'" % initVar.cmx.cluster_name
         print "%s" % hosts
         cluster.add_hosts(hosts)
 
@@ -96,8 +96,8 @@ def host_rack():
     """
     # TODO: Add host to rack
     print "> Add host to rack"
-    api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password, version=cmx.api_version)
-    cluster = api.get_cluster(cmx.cluster_name)
+    api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password, version=initVar.cmx.api_version)
+    cluster = api.get_cluster(initVar.cmx.cluster_name)
     hosts = []
     for h in api.get_all_hosts():
         # host = api.create_host(h.hostId, h.hostname,
@@ -111,8 +111,8 @@ def host_rack():
 
 def _check_parcel_stage(parcel_item, expected_stage, action_description):
     # def wait_for_parcel_stage(cluster, parcel, wanted_stages, action_description):
-    api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password, version=cmx.api_version)
-    cluster = api.get_cluster(cmx.cluster_name)
+    api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password, version=initVar.cmx.api_version)
+    cluster = api.get_cluster(initVar.cmx.cluster_name)
 
     while True:
         cdh_parcel = cluster.get_parcel(product=parcel_item['product'], version=parcel_item['version'])
@@ -128,8 +128,8 @@ def _check_parcel_stage(parcel_item, expected_stage, action_description):
 
 
 def parcel_action(parcel_item, function, expected_stage, action_description):
-    api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password, version=cmx.api_version)
-    cluster = api.get_cluster(cmx.cluster_name)
+    api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password, version=initVar.cmx.api_version)
+    cluster = api.get_cluster(initVar.cmx.cluster_name)
     print "%s [%s-%s]" % (action_description, parcel_item['product'], parcel_item['version'])
     cdh_parcel = cluster.get_parcel(product=parcel_item['product'], version=parcel_item['version'])
 

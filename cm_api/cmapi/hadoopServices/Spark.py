@@ -13,8 +13,8 @@ def sparkSetup():
     Starting Spark Service
     :return:
     """
-    api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password, version=cmx.api_version)
-    cluster = api.get_cluster(cmx.cluster_name)
+    api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password, version=initVar.cmx.api_version)
+    cluster = api.get_cluster(initVar.cmx.cluster_name)
     service_type = "SPARK"
     if cdh.get_service_type(service_type) is None:
         print "> %s" % service_type
@@ -53,8 +53,8 @@ def sparkonyarnSetup():
     Sqoop Client
     :return:
     """
-    api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password, version=cmx.api_version)
-    cluster = api.get_cluster(cmx.cluster_name)
+    api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password, version=initVar.cmx.api_version)
+    cluster = api.get_cluster(initVar.cmx.cluster_name)
     service_type = "SPARK_ON_YARN"
     if cdh.get_service_type(service_type) is None:
         print "> %s" % service_type
