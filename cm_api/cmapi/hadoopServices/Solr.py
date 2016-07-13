@@ -35,10 +35,10 @@ def solrSetup():
         # Example of deploy_client_config. Recommended to Deploy Cluster wide client config.
         # cdh.deploy_client_config_for(service)
 
-        # check.status_for_command("Initializing Solr in ZooKeeper", service._cmd('initSolr'))
-        # check.status_for_command("Creating HDFS home directory for Solr", service._cmd('createSolrHdfsHomeDir'))
-        check.status_for_command("Initializing Solr in ZooKeeper", service.init_solr())
-        check.status_for_command("Creating HDFS home directory for Solr",
+        # initVar.check.status_for_command("Initializing Solr in ZooKeeper", service._cmd('initSolr'))
+        # initVar.check.status_for_command("Creating HDFS home directory for Solr", service._cmd('createSolrHdfsHomeDir'))
+        initVar.check.status_for_command("Initializing Solr in ZooKeeper", service.init_solr())
+        initVar.check.status_for_command("Creating HDFS home directory for Solr",
                                  service.create_solr_hdfs_home_dir())
         # This service is started later on
-        # check.status_for_command("Starting Solr Service", service.start())
+        # initVar.check.status_for_command("Starting Solr Service", service.start())

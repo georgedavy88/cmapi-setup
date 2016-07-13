@@ -53,8 +53,8 @@ def hiveSetup():
         # Example of deploy_client_config. Recommended to Deploy Cluster wide client config.
         # cdh.deploy_client_config_for(service)
 
-        check.status_for_command("Creating Hive Metastore Database Tables", service.create_hive_metastore_tables())
-        check.status_for_command("Creating Hive user directory", service.create_hive_userdir())
-        check.status_for_command("Creating Hive warehouse directory", service.create_hive_warehouse())
+        initVar.check.status_for_command("Creating Hive Metastore Database Tables", service.create_hive_metastore_tables())
+        initVar.check.status_for_command("Creating Hive user directory", service.create_hive_userdir())
+        initVar.check.status_for_command("Creating Hive warehouse directory", service.create_hive_warehouse())
         # This service is started later on
-        # check.status_for_command("Starting Hive Service", service.start())
+        # initVar.check.status_for_command("Starting Hive Service", service.start())

@@ -75,7 +75,7 @@ def hdfsSetup():
         nn_role_type = service.get_roles_by_type("NAMENODE")[0]
         commands = service.format_hdfs(nn_role_type.name)
         for cmd in commands:
-            check.status_for_command("Format NameNode", cmd)
+            initVar.check.status_for_command("Format NameNode", cmd)
 
-        check.status_for_command("Starting HDFS.", service.start())
-        check.status_for_command("Creating HDFS /tmp directory", service.create_hdfs_tmp())
+        initVar.check.status_for_command("Starting HDFS.", service.start())
+        initVar.check.status_for_command("Creating HDFS /tmp directory", service.create_hdfs_tmp())

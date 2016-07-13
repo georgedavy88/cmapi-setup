@@ -29,4 +29,4 @@ def hueSetup():
                 rcg.update_config({})
                 cdh.create_service_role(service, "HUE_SERVER", [x for x in hosts if x.id == 0][0])
                 # This service is started later on
-                # check.status_for_command("Starting Hue Service", service.start())
+                # initVar.check.status_for_command("Starting Hue Service", service.start())

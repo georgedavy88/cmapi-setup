@@ -40,7 +40,7 @@ class ManagementActions:
         state = {'start_roles': ['STOPPED'], 'stop_roles': ['STARTED'], 'restart_roles': ['STARTED', 'STOPPED']}
         for mgmt_role in [x for x in self._role_list if x in self._role_types]:
             for role in [x for x in self._service.get_roles_by_type(mgmt_role) if x.roleState in state[action]]:
-                [check.status_for_command("%s role %s" % (action.split("_")[0].upper(), mgmt_role), cmd)
+                [initVar.check.status_for_command("%s role %s" % (action.split("_")[0].upper(), mgmt_role), cmd)
                  for cmd in getattr(self._service, action)(role.name)]
 
     def setup(self):
@@ -66,7 +66,7 @@ class ManagementActions:
                     print "Creating Management Role %s " % role_type
                     role_name = "mgmt-%s-%s" % (role_type, mgmt_host.md5host)
                     for cmd in self._service.create_role(role_name, role_type, mgmt_host.hostId).get_commands():
-                        check.status_for_command("Creating %s" % role_name, cmd)
+                        initVar.check.status_for_command("Creating %s" % role_name, cmd)
             except ApiException as err:
                 print "ERROR: %s " % err.message
 
@@ -224,8 +224,8 @@ class ManagementActions:
                           version=initVar.cmx.api_version)
         mgmt = api.get_cloudera_manager().get_service()
 
-        check.status_for_command("Stop Management services", mgmt.stop())
-        check.status_for_command("Start Management services", mgmt.start())
+        initVar.check.status_for_command("Stop Management services", mgmt.stop())
+        initVar.check.status_for_command("Start Management services", mgmt.start())
 
 
 class ServiceActions:
@@ -255,7 +255,7 @@ class ServiceActions:
         state = {'start': ['STOPPED'], 'stop': ['STARTED'], 'restart': ['STARTED', 'STOPPED']}
         for services in [x for x in self._cluster.get_all_services()
                          if x.type in self._service_list and x.serviceState in state[action]]:
-            check.status_for_command("%s service %s" % (action.upper(), services.type),
+            initVar.check.status_for_command("%s service %s" % (action.upper(), services.type),
                                      getattr(self._cluster.get_service(services.name), action)())
 
     @classmethod
@@ -299,11 +299,11 @@ class ServiceActions:
                 service = cdh.get_service_type('GATEWAY')
                 print "Deploying client config for service: %s - host: [%s]" % \
                       (service.type, api.get_host(obj).hostname)
-                check.status_for_command("Deploy client config for role %s" %
+                initVar.check.status_for_command("Deploy client config for role %s" %
                                          role_name, service.deploy_client_config(role_name))
         elif isinstance(obj, ApiService):
             for role in obj.get_roles_by_type("GATEWAY"):
-                check.status_for_command("Deploy client config for role %s" %
+                initVar.check.status_for_command("Deploy client config for role %s" %
                                          role.name, obj.deploy_client_config(role.name))
 
     @classmethod
@@ -318,7 +318,7 @@ class ServiceActions:
         role_name = "-".join([service_name, role_type, host.md5host])[:64]
         print "Creating role: %s on host: [%s]" % (role_name, host.hostname)
         if not [role for role in service.get_all_roles() if role_name in role.name]:
-            [check.status_for_command("Creating role: %s on host: [%s]" % (role_name, host.hostname), cmd)
+            [initVar.check.status_for_command("Creating role: %s on host: [%s]" % (role_name, host.hostname), cmd)
              for cmd in service.create_role(role_name, role_type, host.hostId).get_commands()]
 
     @classmethod
@@ -331,10 +331,10 @@ class ServiceActions:
                           version=initVar.cmx.api_version)
         cluster = api.get_cluster(initVar.cmx.cluster_name)
         print "Restart cluster: %s" % initVar.cmx.cluster_name
-        check.status_for_command("Stop %s" % initVar.cmx.cluster_name, cluster.stop())
-        check.status_for_command("Start %s" % initVar.cmx.cluster_name, cluster.start())
+        initVar.check.status_for_command("Stop %s" % initVar.cmx.cluster_name, cluster.stop())
+        initVar.check.status_for_command("Start %s" % initVar.cmx.cluster_name, cluster.start())
         # Example deploying cluster wide Client Config
-        check.status_for_command("Deploy client config for %s" % initVar.cmx.cluster_name, cluster.deploy_client_config())
+        initVar.check.status_for_command("Deploy client config for %s" % initVar.cmx.cluster_name, cluster.deploy_client_config())
 
     @classmethod
     def dependencies_for(cls, service):

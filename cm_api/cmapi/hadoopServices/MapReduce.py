@@ -46,4 +46,4 @@ def mapreduceSetup():
                 # cdh.deploy_client_config_for(service)
 
                 # This service is started later on
-                # check.status_for_command("Starting MapReduce Service", service.start())
+                # initVar.check.status_for_command("Starting MapReduce Service", service.start())

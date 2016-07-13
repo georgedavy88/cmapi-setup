@@ -56,8 +56,8 @@ def yarnSetup():
         # Example of deploy_client_config. Recommended to Deploy Cluster wide client config.
         # cdh.deploy_client_config_for(service)
 
-        check.status_for_command("Creating MR2 job history directory", service.create_yarn_job_history_dir())
-        check.status_for_command("Creating NodeManager remote application log directory",
+        initVar.check.status_for_command("Creating MR2 job history directory", service.create_yarn_job_history_dir())
+        initVar.check.status_for_command("Creating NodeManager remote application log directory",
                                  service.create_yarn_node_manager_remote_app_log_dir())
         # This service is started later on
-        # check.status_for_command("Starting YARN (MR2 Included) Service", service.start())
+        # initVar.check.status_for_command("Starting YARN (MR2 Included) Service", service.start())

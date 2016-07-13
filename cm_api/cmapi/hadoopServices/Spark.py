@@ -37,15 +37,15 @@ def sparkSetup():
         # Example of deploy_client_config. Recommended to Deploy Cluster wide client config.
         # cdh.deploy_client_config_for(service)
 
-        check.status_for_command("Execute command CreateSparkUserDirCommand on service Spark",
+        initVar.check.status_for_command("Execute command CreateSparkUserDirCommand on service Spark",
                                  service.service_command_by_name('CreateSparkUserDirCommand'))
-        check.status_for_command("Execute command CreateSparkHistoryDirCommand on service Spark",
+        initVar.check.status_for_command("Execute command CreateSparkHistoryDirCommand on service Spark",
                                  service.service_command_by_name('CreateSparkHistoryDirCommand'))
-        check.status_for_command("Execute command SparkUploadJarServiceCommand on service Spark",
+        initVar.check.status_for_command("Execute command SparkUploadJarServiceCommand on service Spark",
                                  service.service_command_by_name('SparkUploadJarServiceCommand'))
 
         # This service is started later on
-        # check.status_for_command("Starting Spark Service", service.start())
+        # initVar.check.status_for_command("Starting Spark Service", service.start())
 
 
 def sparkonyarnSetup():
@@ -78,12 +78,12 @@ def sparkonyarnSetup():
         # Example of deploy_client_config. Recommended to Deploy Cluster wide client config.
         # cdh.deploy_client_config_for(service)
 
-        check.status_for_command("Execute command CreateSparkUserDirCommand on service Spark",
+        initVar.check.status_for_command("Execute command CreateSparkUserDirCommand on service Spark",
                                  service.service_command_by_name('CreateSparkUserDirCommand'))
-        check.status_for_command("Execute command CreateSparkHistoryDirCommand on service Spark",
+        initVar.check.status_for_command("Execute command CreateSparkHistoryDirCommand on service Spark",
                                  service.service_command_by_name('CreateSparkHistoryDirCommand'))
-        check.status_for_command("Execute command SparkUploadJarServiceCommand on service Spark",
+        initVar.check.status_for_command("Execute command SparkUploadJarServiceCommand on service Spark",
                                  service.service_command_by_name('SparkUploadJarServiceCommand'))
 
         # This service is started later on
-        # check.status_for_command("Starting Spark Service", service.start())
+        # initVar.check.status_for_command("Starting Spark Service", service.start())

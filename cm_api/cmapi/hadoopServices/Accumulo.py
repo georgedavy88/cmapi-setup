@@ -58,10 +58,10 @@ def accumuloSetup():
 
         print "Deploy Client Configuration"
         cluster.deploy_client_config()
-        check.status_for_command("Execute command Create Accumulo Home Dir on service Accumulo 1.6",
+        initVar.check.status_for_command("Execute command Create Accumulo Home Dir on service Accumulo 1.6",
                                  service.service_command_by_name('CreateHdfsDirCommand'))
-        check.status_for_command("Execute command Create Accumulo User Dir on service Accumulo 1.6",
+        initVar.check.status_for_command("Execute command Create Accumulo User Dir on service Accumulo 1.6",
                                  service.service_command_by_name('CreateAccumuloUserDirCommand'))
-        check.status_for_command("Execute command Initialize Accumulo on service Accumulo 1.6",
+        initVar.check.status_for_command("Execute command Initialize Accumulo on service Accumulo 1.6",
                                  service.service_command_by_name('AccumuloInitServiceCommand'))
-        # check.status_for_command("Starting Accumulo Service", service.start())
+        # initVar.check.status_for_command("Starting Accumulo Service", service.start())

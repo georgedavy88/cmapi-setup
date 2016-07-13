@@ -31,13 +31,13 @@ def sqoopSetup():
 
         cdh.create_service_role(service, "SQOOP_SERVER", [x for x in hosts if x.id == 0][0])
 
-        check.status_for_command("Creating Sqoop 2 user directory", service.create_sqoop_user_dir())
+        initVar.check.status_for_command("Creating Sqoop 2 user directory", service.create_sqoop_user_dir())
         # CDH Version check if greater than 5.3.0
         vc = lambda v: tuple(map(int, (v.split("."))))
         if vc(initVar.cmx.parcel[0]['version'].split('-')[0]) >= vc("5.3.0"):
-            check.status_for_command("Creating Sqoop 2 Database", service._cmd('SqoopCreateDatabase'))
+            initVar.check.status_for_command("Creating Sqoop 2 Database", service._cmd('SqoopCreateDatabase'))
             # This service is started later on
-            # check.status_for_command("Starting Sqoop 2 Service", service.start())
+            # initVar.check.status_for_command("Starting Sqoop 2 Service", service.start())
 
 
 def sqoopclientSetup():

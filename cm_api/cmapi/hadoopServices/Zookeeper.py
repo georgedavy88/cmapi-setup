@@ -32,5 +32,5 @@ def zookeeperSetup():
                     cdh.create_service_role(service, rcg.roleType, host)
 
         # init_zookeeper not required as the API performs this when adding Zookeeper
-        # check.status_for_command("Waiting for ZooKeeper Service to initialize", service.init_zookeeper())
-        check.status_for_command("Starting ZooKeeper Service", service.start())
+        # initVar.check.status_for_command("Waiting for ZooKeeper Service to initialize", service.init_zookeeper())
+        initVar.check.status_for_command("Starting ZooKeeper Service", service.start())

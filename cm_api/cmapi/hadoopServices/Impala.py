@@ -40,10 +40,10 @@ def impalaSetup(enable_llama=False):
         for host in hosts:
             cdh.create_service_role(service, "IMPALAD", host)
 
-        check.status_for_command("Creating Impala user directory", service.create_impala_user_dir())
+        initVar.check.status_for_command("Creating Impala user directory", service.create_impala_user_dir())
         # Impala will be started/stopped when we enable_llama_rm
         # This service is started later on
-        # check.status_for_command("Starting Impala Service", service.start())
+        # initVar.check.status_for_command("Starting Impala Service", service.start())
 
         # Enable YARN and Impala Integrated Resource Management
         # http://www.cloudera.com/content/www/en-us/documentation/enterprise/latest/topics/admin_llama.html
@@ -56,5 +56,5 @@ def impalaSetup(enable_llama=False):
             role_group = yarn.get_role_config_group("%s-RESOURCEMANAGER-BASE" % yarn.name)
             role_group.update_config({"yarn_scheduler_minimum_allocation_mb": 0,
                                       "yarn_scheduler_minimum_allocation_vcores": 0})
-            check.status_for_command("Enable YARN and Impala Integrated Resource Management",
+            initVar.check.status_for_command("Enable YARN and Impala Integrated Resource Management",
                                      service.enable_llama_rm(random.choice(hosts).hostId))

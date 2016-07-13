@@ -30,7 +30,7 @@ def oozieSetup():
                 rcg.update_config({"oozie_java_heapsize": "492830720"})
                 cdh.create_service_role(service, rcg.roleType, [x for x in hosts if x.id == 0][0])
 
-        check.status_for_command("Creating Oozie database", service.create_oozie_db())
-        check.status_for_command("Installing Oozie ShareLib in HDFS", service.install_oozie_sharelib())
+        initVar.check.status_for_command("Creating Oozie database", service.create_oozie_db())
+        initVar.check.status_for_command("Installing Oozie ShareLib in HDFS", service.install_oozie_sharelib())
         # This service is started later on
-        # check.status_for_command("Starting Oozie Service", service.start())
+        # initVar.check.status_for_command("Starting Oozie Service", service.start())

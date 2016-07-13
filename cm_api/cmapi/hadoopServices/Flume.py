@@ -16,4 +16,4 @@ def flumeSetup():
         hosts = initVar.manager.get_hosts()
         cdh.create_service_role(service, "AGENT", [x for x in hosts if x.id == 0][0])
         # This service is started later on
-        # check.status_for_command("Starting Flume Agent", service.start())
+        # initVar.check.status_for_command("Starting Flume Agent", service.start())

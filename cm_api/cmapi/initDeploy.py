@@ -76,7 +76,7 @@ def add_hosts_to_cluster():
         # cmd = cm._cmd('hostInstall', data=host_install_args)
         print "Installing host(s) to cluster '%s' - [ http://%s:7180/cmf/command/%s/details ]" % \
               (socket.getfqdn(initVar.cmx.cm_server), initVar.cmx.cm_server, cmd.id)
-        check.status_for_command("Hosts: %s " % host_list, cmd)
+        initVar.check.status_for_command("Hosts: %s " % host_list, cmd)
 
     hosts = []
     for host in api.get_all_hosts():

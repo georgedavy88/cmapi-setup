@@ -50,6 +50,6 @@ def hbaseSetup():
         # Example of deploy_client_config. Recommended to Deploy Cluster wide client config.
         # cdh.deploy_client_config_for(service)
 
-        check.status_for_command("Creating HBase root directory", service.create_hbase_root())
+        initVar.check.status_for_command("Creating HBase root directory", service.create_hbase_root())
         # This service is started later on
-        # check.status_for_command("Starting HBase Service", service.start())
+        # initVar.check.status_for_command("Starting HBase Service", service.start())
