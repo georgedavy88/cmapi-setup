@@ -10,8 +10,8 @@ def oozieSetup():
     Starting Oozie Service
     :return:
     """
-    api = ApiResource(server_host=api.cm_server, username=api.username, password=api.password, version=api.api_version)
-    cluster = api.get_cluster(api.cluster_name)
+    apiR = ApiResource(server_host=api.cm_server, username=api.username, password=api.password, version=api.api_version)
+    cluster = apiR.get_cluster(api.cluster_name)
     service_type = "OOZIE"
     if cdh.get_service_type(service_type) is None:
         print "> %s" % service_type

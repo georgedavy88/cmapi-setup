@@ -9,7 +9,7 @@ def main():
     add_hosts_to_cluster()
 
     # Deploy CDH Parcel and GPL Extra Parcel skip if they are ACTIVATED
-    api = ApiResource(server_host=api.cm_server, username=api.username, password=api.password, version=api.api_version)
+    apiR = ApiResource(server_host=api.cm_server, username=api.username, password=api.password, version=api.api_version)
     cluster = api.get_cluster(api.cluster_name)
     for cdh_parcel in api.parcel:
         print "> Parcel action for parcel: [ %s-%s ]" % (cdh_parcel['product'], cdh_parcel['version'])

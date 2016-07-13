@@ -12,7 +12,7 @@ def init_cluster():
     :return:
     """
     print "> Initialise Cluster"
-    api = ApiResource(server_host=api.cm_server, username=api.username, password=api.password, version=api.api_version)
+    apiR = ApiResource(server_host=api.cm_server, username=api.username, password=api.password, version=api.api_version)
     # Update Cloudera Manager configuration
     cm = api.get_cloudera_manager()
 
@@ -58,7 +58,7 @@ def add_hosts_to_cluster():
     :return:
     """
     print "> Add hosts to Cluster: %s" % api.cluster_name
-    api = ApiResource(server_host=api.cm_server, username=api.username, password=api.password, version=api.api_version)
+    apiR = ApiResource(server_host=api.cm_server, username=api.username, password=api.password, version=api.api_version)
     cluster = api.get_cluster(api.cluster_name)
     cm = api.get_cloudera_manager()
 
@@ -96,7 +96,7 @@ def host_rack():
     """
     # TODO: Add host to rack
     print "> Add host to rack"
-    api = ApiResource(server_host=api.cm_server, username=api.username, password=api.password, version=api.api_version)
+    apiR = ApiResource(server_host=api.cm_server, username=api.username, password=api.password, version=api.api_version)
     cluster = api.get_cluster(api.cluster_name)
     hosts = []
     for h in api.get_all_hosts():
@@ -111,7 +111,7 @@ def host_rack():
 
 def _check_parcel_stage(parcel_item, expected_stage, action_description):
     # def wait_for_parcel_stage(cluster, parcel, wanted_stages, action_description):
-    api = ApiResource(server_host=api.cm_server, username=api.username, password=api.password, version=api.api_version)
+    apiR = ApiResource(server_host=api.cm_server, username=api.username, password=api.password, version=api.api_version)
     cluster = api.get_cluster(api.cluster_name)
 
     while True:
@@ -128,7 +128,7 @@ def _check_parcel_stage(parcel_item, expected_stage, action_description):
 
 
 def parcel_action(parcel_item, function, expected_stage, action_description):
-    api = ApiResource(server_host=api.cm_server, username=api.username, password=api.password, version=api.api_version)
+    apiR = ApiResource(server_host=api.cm_server, username=api.username, password=api.password, version=api.api_version)
     cluster = api.get_cluster(api.cluster_name)
     print "%s [%s-%s]" % (action_description, parcel_item['product'], parcel_item['version'])
     cdh_parcel = cluster.get_parcel(product=parcel_item['product'], version=parcel_item['version'])

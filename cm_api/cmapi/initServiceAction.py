@@ -3,7 +3,7 @@ import socket
 import hashlib
 import os
 import sys
-
+from initDeploy import *
 from cm_api.api_client import ApiResource, ApiException
 from cm_api.endpoints.hosts import *
 from cm_api.endpoints.services import ApiServiceSetupInfo, ApiService
@@ -18,7 +18,7 @@ class ManagementActions:
 
     def __init__(self, *role_list):
         self._role_list = role_list
-        self._api = ApiResource(server_host=api.cm_server, username=api.username, password=api.password,
+        self._apiR = ApiResource(server_host=api.cm_server, username=api.username, password=api.password,
                                 version=api.api_version)
         self._cm = self._api.get_cloudera_manager()
         try:
@@ -109,7 +109,7 @@ class ManagementActions:
         Check if Cluster is licensed
         :return:
         """
-        api = ApiResource(server_host=api.cm_server, username=api.username, password=api.password,
+        apiR = ApiResource(server_host=api.cm_server, username=api.username, password=api.password,
                           version=api.api_version)
         cm = api.get_cloudera_manager()
         try:
@@ -123,7 +123,7 @@ class ManagementActions:
         Upload License file
         :return:
         """
-        api = ApiResource(server_host=api.cm_server, username=api.username, password=api.password,
+        apiR = ApiResource(server_host=api.cm_server, username=api.username, password=api.password,
                           version=api.api_version)
         cm = api.get_cloudera_manager()
         if api.license_file and not manager.licensed():
@@ -142,7 +142,7 @@ class ManagementActions:
         Begin Trial
         :return:
         """
-        api = ApiResource(server_host=api.cm_server, username=api.username, password=api.password,
+        apiR = ApiResource(server_host=api.cm_server, username=api.username, password=api.password,
                           version=api.api_version)
         print "def begin_trial"
         if not manager.licensed():
@@ -190,7 +190,7 @@ class ManagementActions:
         attributes = {'id': None, 'hostId': None, 'hostname': None, 'md5host': None, 'ipAddress': None, }
         return a list of hosts
         """
-        api = ApiResource(server_host=api.cm_server, username=api.username, password=api.password,
+        apiR = ApiResource(server_host=api.cm_server, username=api.username, password=api.password,
                           version=api.api_version)
 
         w_hosts = set(enumerate(api.host_names))
@@ -217,7 +217,7 @@ class ManagementActions:
         Restart Management Services
         :return:
         """
-        api = ApiResource(server_host=api.cm_server, username=api.username, password=api.password,
+        apiR = ApiResource(server_host=api.cm_server, username=api.username, password=api.password,
                           version=api.api_version)
         mgmt = api.get_cloudera_manager().get_service()
 
@@ -235,7 +235,7 @@ class ServiceActions:
 
     def __init__(self, *service_list):
         self._service_list = service_list
-        self._api = ApiResource(server_host=api.cm_server, username=api.username, password=api.password,
+        self._apiR = ApiResource(server_host=api.cm_server, username=api.username, password=api.password,
                                 version=api.api_version)
         self._cluster = self._api.get_cluster(api.cluster_name)
 
@@ -262,7 +262,7 @@ class ServiceActions:
         :param name:
         :return:
         """
-        api = ApiResource(server_host=api.cm_server, username=api.username, password=api.password,
+        apiR = ApiResource(server_host=api.cm_server, username=api.username, password=api.password,
                           version=api.api_version)
         cluster = api.get_cluster(api.cluster_name)
         try:
@@ -288,7 +288,7 @@ class ServiceActions:
         :param host.hostId, or ApiService:
         :return:
         """
-        api = ApiResource(server_host=api.cm_server, username=api.username, password=api.password,
+        apiR = ApiResource(server_host=api.cm_server, username=api.username, password=api.password,
                           version=api.api_version)
         # cluster = api.get_cluster(api.cluster_name)
         if isinstance(obj, str) or isinstance(obj, unicode):
@@ -324,7 +324,7 @@ class ServiceActions:
         Restart Cluster and Cluster wide deploy client config
         :return:
         """
-        api = ApiResource(server_host=api.cm_server, username=api.username, password=api.password,
+        apiR = ApiResource(server_host=api.cm_server, username=api.username, password=api.password,
                           version=api.api_version)
         cluster = api.get_cluster(api.cluster_name)
         print "Restart cluster: %s" % api.cluster_name
@@ -398,7 +398,7 @@ class ServiceActions:
 
 class ActiveCommands:
     def __init__(self):
-        self._api = ApiResource(server_host=api.cm_server, username=api.username, password=api.password,
+        self._apiR = ApiResource(server_host=api.cm_server, username=api.username, password=api.password,
                                 version=api.api_version)
 
     def status_for_command(self, message, command):
