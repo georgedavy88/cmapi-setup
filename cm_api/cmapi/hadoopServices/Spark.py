@@ -16,7 +16,7 @@ def sparkSetup():
     api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password, version=initVar.cmx.api_version)
     cluster = api.get_cluster(initVar.cmx.cluster_name)
     service_type = "SPARK"
-    if cdh.get_service_type(service_type) is None:
+    if initVar.cdh.get_service_type(service_type) is None:
         print "> %s" % service_type
         service_name = "spark"
         print "Create %s service" % service_name
@@ -25,17 +25,17 @@ def sparkSetup():
         hosts = initVar.manager.get_hosts()
 
         # Service-Wide
-        service.update_config(cdh.dependencies_for(service))
+        service.update_config(initVar.cdh.dependencies_for(service))
 
-        cdh.create_service_role(service, "SPARK_MASTER", [x for x in hosts if x.id == 0][0])
-        cdh.create_service_role(service, "SPARK_HISTORY_SERVER", random.choice(hosts))
+        initVar.cdh.create_service_role(service, "SPARK_MASTER", [x for x in hosts if x.id == 0][0])
+        initVar.cdh.create_service_role(service, "SPARK_HISTORY_SERVER", random.choice(hosts))
 
         for role_type in ['GATEWAY', 'SPARK_WORKER']:
             for host in initVar.manager.get_hosts(include_cm_host=(role_type == 'GATEWAY')):
-                cdh.create_service_role(service, role_type, host)
+                initVar.cdh.create_service_role(service, role_type, host)
 
         # Example of deploy_client_config. Recommended to Deploy Cluster wide client config.
-        # cdh.deploy_client_config_for(service)
+        # initVar.cdh.deploy_client_config_for(service)
 
         initVar.check.status_for_command("Execute command CreateSparkUserDirCommand on service Spark",
                                  service.service_command_by_name('CreateSparkUserDirCommand'))
@@ -56,7 +56,7 @@ def sparkonyarnSetup():
     api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password, version=initVar.cmx.api_version)
     cluster = api.get_cluster(initVar.cmx.cluster_name)
     service_type = "SPARK_ON_YARN"
-    if cdh.get_service_type(service_type) is None:
+    if initVar.cdh.get_service_type(service_type) is None:
         print "> %s" % service_type
         service_name = "spark_on_yarn"
         print "Create %s service" % service_name
@@ -65,18 +65,18 @@ def sparkonyarnSetup():
         hosts = initVar.manager.get_hosts()
 
         # Service-Wide
-        service.update_config(cdh.dependencies_for(service))
+        service.update_config(initVar.cdh.dependencies_for(service))
         for rcg in [x for x in service.get_all_role_config_groups()]:
             if rcg.roleType == "SPARK_YARN_HISTORY_SERVER":
                 rcg.update_config({"history_server_max_heapsize": "153092096"})
 
-        cdh.create_service_role(service, "SPARK_YARN_HISTORY_SERVER", random.choice(hosts))
+        initVar.cdh.create_service_role(service, "SPARK_YARN_HISTORY_SERVER", random.choice(hosts))
 
         for host in initVar.manager.get_hosts(include_cm_host=True):
-            cdh.create_service_role(service, "GATEWAY", host)
+            initVar.cdh.create_service_role(service, "GATEWAY", host)
 
         # Example of deploy_client_config. Recommended to Deploy Cluster wide client config.
-        # cdh.deploy_client_config_for(service)
+        # initVar.cdh.deploy_client_config_for(service)
 
         initVar.check.status_for_command("Execute command CreateSparkUserDirCommand on service Spark",
                                  service.service_command_by_name('CreateSparkUserDirCommand'))

@@ -10,7 +10,7 @@ def mapreduceSetup():
     api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password, version=initVar.cmx.api_version)
     cluster = api.get_cluster(initVar.cmx.cluster_name)
     service_type = "MAPREDUCE"
-    if cdh.get_service_type(service_type) is None:
+    if initVar.cdh.get_service_type(service_type) is None:
         print "> %s" % service_type
         service_name = "mapreduce"
         print "Create %s service" % service_name
@@ -19,7 +19,7 @@ def mapreduceSetup():
         hosts = initVar.manager.get_hosts()
 
         # Service-Wide
-        service.update_config(cdh.dependencies_for(service))
+        service.update_config(initVar.cdh.dependencies_for(service))
 
         for rcg in [x for x in service.get_all_role_config_groups()]:
             if rcg.roleType == "JOBTRACKER":
@@ -27,7 +27,7 @@ def mapreduceSetup():
                 rcg.update_config({"jobtracker_mapred_local_dir_list": "/data/mapred/jt",
                                    "jobtracker_java_heapsize": "492830720",
                                    "mapred_job_tracker_handler_count": "22"})
-                cdh.create_service_role(service, rcg.roleType, [x for x in hosts if x.id == 0][0])
+                initVar.cdh.create_service_role(service, rcg.roleType, [x for x in hosts if x.id == 0][0])
             if rcg.roleType == "TASKTRACKER":
                 # mapreduce-TASKTRACKER - Default Group
                 rcg.update_config({"tasktracker_mapred_local_dir_list": "/data/mapred/local",
@@ -40,10 +40,10 @@ def mapreduceSetup():
 
         for role_type in ['GATEWAY', 'TASKTRACKER']:
             for host in initVar.manager.get_hosts(include_cm_host=(role_type == 'GATEWAY')):
-                cdh.create_service_role(service, role_type, host)
+                initVar.cdh.create_service_role(service, role_type, host)
 
                 # Example of deploy_client_config. Recommended to Deploy Cluster wide client config.
-                # cdh.deploy_client_config_for(service)
+                # initVar.cdh.deploy_client_config_for(service)
 
                 # This service is started later on
                 # initVar.check.status_for_command("Starting MapReduce Service", service.start())

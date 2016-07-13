@@ -296,7 +296,7 @@ class ServiceActions:
         # cluster = api.get_cluster(initVar.cmx.cluster_name)
         if isinstance(obj, str) or isinstance(obj, unicode):
             for role_name in [x.roleName for x in api.get_host(obj).roleRefs if 'GATEWAY' in x.roleName]:
-                service = cdh.get_service_type('GATEWAY')
+                service = initVar.cdh.get_service_type('GATEWAY')
                 print "Deploying client config for service: %s - host: [%s]" % \
                       (service.type, api.get_host(obj).hostname)
                 initVar.check.status_for_command("Deploy client config for role %s" %
@@ -375,7 +375,7 @@ class ServiceActions:
 
         for key in dependency_list:
             if key == "hue_webhdfs":
-                hdfs = cdh.get_service_type('HDFS')
+                hdfs = initVar.cdh.get_service_type('HDFS')
                 if hdfs is not None:
                     service_config[key] = [x.name for x in hdfs.get_roles_by_type('NAMENODE')][0]
                     # prefer HTTPS over NAMENODE
@@ -383,18 +383,18 @@ class ServiceActions:
                         service_config[key] = [x.name for x in hdfs.get_roles_by_type('HTTPFS')][0]
             elif key == "mapreduce_yarn_service":
                 for _type in config_types[key]:
-                    if cdh.get_service_type(_type) is not None:
-                        service_config[key] = cdh.get_service_type(_type).name
+                    if initVar.cdh.get_service_type(_type) is not None:
+                        service_config[key] = initVar.cdh.get_service_type(_type).name
                     # prefer YARN over MAPREDUCE
-                    if cdh.get_service_type(_type) is not None and _type == 'YARN':
-                        service_config[key] = cdh.get_service_type(_type).name
+                    if initVar.cdh.get_service_type(_type) is not None and _type == 'YARN':
+                        service_config[key] = initVar.cdh.get_service_type(_type).name
             elif key == "hue_hbase_thrift":
-                hbase = cdh.get_service_type('HBASE')
+                hbase = initVar.cdh.get_service_type('HBASE')
                 if hbase is not None:
                     service_config[key] = [x.name for x in hbase.get_roles_by_type(config_types[key])][0]
             else:
-                if cdh.get_service_type(config_types[key]) is not None:
-                    service_config[key] = cdh.get_service_type(config_types[key]).name
+                if initVar.cdh.get_service_type(config_types[key]) is not None:
+                    service_config[key] = initVar.cdh.get_service_type(config_types[key]).name
 
         return service_config
 

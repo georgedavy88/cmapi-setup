@@ -15,7 +15,7 @@ def yarnSetup():
     api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password, version=initVar.cmx.api_version)
     cluster = api.get_cluster(initVar.cmx.cluster_name)
     service_type = "YARN"
-    if cdh.get_service_type(service_type) is None:
+    if initVar.cdh.get_service_type(service_type) is None:
         print "> %s" % service_type
         service_name = "yarn"
         print "Create %s service" % service_name
@@ -24,7 +24,7 @@ def yarnSetup():
         hosts = initVar.manager.get_hosts()
 
         # Service-Wide
-        service.update_config(cdh.dependencies_for(service))
+        service.update_config(initVar.cdh.dependencies_for(service))
 
         for rcg in [x for x in service.get_all_role_config_groups()]:
             if rcg.roleType == "RESOURCEMANAGER":
@@ -32,11 +32,11 @@ def yarnSetup():
                 rcg.update_config({"resource_manager_java_heapsize": "492830720",
                                    "yarn_scheduler_maximum_allocation_mb": "2568",
                                    "yarn_scheduler_maximum_allocation_vcores": "2"})
-                cdh.create_service_role(service, rcg.roleType, [x for x in hosts if x.id == 0][0])
+                initVar.cdh.create_service_role(service, rcg.roleType, [x for x in hosts if x.id == 0][0])
             if rcg.roleType == "JOBHISTORY":
                 # yarn-JOBHISTORY - Default Group
                 rcg.update_config({"mr2_jobhistory_java_heapsize": "492830720"})
-                cdh.create_service_role(service, rcg.roleType, random.choice(hosts))
+                initVar.cdh.create_service_role(service, rcg.roleType, random.choice(hosts))
             if rcg.roleType == "NODEMANAGER":
                 # yarn-NODEMANAGER - Default Group
                 rcg.update_config({"yarn_nodemanager_heartbeat_interval_ms": "100",
@@ -45,16 +45,16 @@ def yarnSetup():
                                    "yarn_nodemanager_resource_memory_mb": "2568",
                                    "node_manager_java_heapsize": "127926272"})
                 for host in hosts:
-                    cdh.create_service_role(service, rcg.roleType, host)
+                    initVar.cdh.create_service_role(service, rcg.roleType, host)
             if rcg.roleType == "GATEWAY":
                 # yarn-GATEWAY - Default Group
                 rcg.update_config({"mapred_reduce_tasks": "505413632", "mapred_submit_replication": "1",
                                    "mapred_reduce_tasks": "3"})
                 for host in initVar.manager.get_hosts(include_cm_host=True):
-                    cdh.create_service_role(service, rcg.roleType, host)
+                    initVar.cdh.create_service_role(service, rcg.roleType, host)
 
         # Example of deploy_client_config. Recommended to Deploy Cluster wide client config.
-        # cdh.deploy_client_config_for(service)
+        # initVar.cdh.deploy_client_config_for(service)
 
         initVar.check.status_for_command("Creating MR2 job history directory", service.create_yarn_job_history_dir())
         initVar.check.status_for_command("Creating NodeManager remote application log directory",

@@ -14,7 +14,7 @@ def hbaseSetup():
     api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password, version=initVar.cmx.api_version)
     cluster = api.get_cluster(initVar.cmx.cluster_name)
     service_type = "HBASE"
-    if cdh.get_service_type(service_type) is None:
+    if initVar.cdh.get_service_type(service_type) is None:
         print "> %s" % service_type
         service_name = "hbase"
         print "Create %s service" % service_name
@@ -25,7 +25,7 @@ def hbaseSetup():
         # Service-Wide
         service_config = {"hbase_enable_indexing": True, "hbase_enable_replication": True,
                           "zookeeper_session_timeout": "30000"}
-        service_config.update(cdh.dependencies_for(service))
+        service_config.update(initVar.cdh.dependencies_for(service))
         service.update_config(service_config)
 
         # Role Config Group equivalent to Service Default Group
@@ -41,14 +41,14 @@ def hbaseSetup():
                                                                    "-XX:+PrintGCDetails -XX:+PrintGCDateStamps"})
 
         for role_type in ['MASTER', 'HBASETHRIFTSERVER', 'HBASERESTSERVER']:
-            cdh.create_service_role(service, role_type, random.choice(hosts))
+            initVar.cdh.create_service_role(service, role_type, random.choice(hosts))
 
         for role_type in ['GATEWAY', 'REGIONSERVER']:
             for host in initVar.manager.get_hosts(include_cm_host=(role_type == 'GATEWAY')):
-                cdh.create_service_role(service, role_type, host)
+                initVar.cdh.create_service_role(service, role_type, host)
 
         # Example of deploy_client_config. Recommended to Deploy Cluster wide client config.
-        # cdh.deploy_client_config_for(service)
+        # initVar.cdh.deploy_client_config_for(service)
 
         initVar.check.status_for_command("Creating HBase root directory", service.create_hbase_root())
         # This service is started later on

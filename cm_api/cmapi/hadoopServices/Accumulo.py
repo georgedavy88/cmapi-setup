@@ -18,7 +18,7 @@ def accumuloSetup():
     api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password, version=initVar.cmx.api_version)
     cluster = api.get_cluster(initVar.cmx.cluster_name)
     service_type = "ACCUMULO16"
-    if cdh.get_service_type(service_type) is None:
+    if initVar.cdh.get_service_type(service_type) is None:
         print "> %s" % service_type
         service_name = "accumulo16"
         print "Create %s service" % service_name
@@ -45,16 +45,16 @@ def accumuloSetup():
                           action_description="Activate Parcel")
 
         # Service-Wide
-        service.update_config(cdh.dependencies_for(service))
+        service.update_config(initVar.cdh.dependencies_for(service))
 
         # Create Accumulo roles
         for role_type in ['ACCUMULO16_MASTER', 'ACCUMULO16_TRACER', 'ACCUMULO16_GC',
                           'ACCUMULO16_TSERVER', 'ACCUMULO16_MONITOR']:
-            cdh.create_service_role(service, role_type, random.choice(hosts))
+            initVar.cdh.create_service_role(service, role_type, random.choice(hosts))
 
         # Create Accumulo gateway roles
         for host in initVar.manager.get_hosts(include_cm_host=True):
-            cdh.create_service_role(service, 'GATEWAY', host)
+            initVar.cdh.create_service_role(service, 'GATEWAY', host)
 
         print "Deploy Client Configuration"
         cluster.deploy_client_config()

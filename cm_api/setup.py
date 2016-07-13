@@ -29,14 +29,14 @@ def main():
     # Skip MGMT role installation if amon_password and rman_password password are False
     mgmt_roles = ['SERVICEMONITOR', 'ALERTPUBLISHER', 'EVENTSERVER', 'HOSTMONITOR']
     if initVar.cmx.amon_password and initVar.cmx.rman_password:
-        if manager.licensed():
+        if initVar.manager.licensed():
             mgmt_roles.append('REPORTSMANAGER')
-        manager(*mgmt_roles).setup()
-        manager(*mgmt_roles).start()
+        initVar.manager(*mgmt_roles).setup()
+        initVar.manager(*mgmt_roles).start()
 
     # Upload license
     if initVar.cmx.license_file:
-        manager.upload_license()
+        initVar.manager.upload_license()
 
     setup_zookeeper()
     setup_hdfs()

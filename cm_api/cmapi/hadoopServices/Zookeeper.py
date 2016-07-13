@@ -14,7 +14,7 @@ def zookeeperSetup():
     api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password, version=initVar.cmx.api_version)
     cluster = api.get_cluster(initVar.cmx.cluster_name)
     service_type = "ZOOKEEPER"
-    if cdh.get_service_type(service_type) is None:
+    if initVar.cdh.get_service_type(service_type) is None:
         print "> %s" % service_type
         service_name = "zookeeper"
         print "Create %s service" % service_name
@@ -29,7 +29,7 @@ def zookeeperSetup():
                 rcg.update_config({"maxClientCnxns": "1024", "zookeeper_server_java_heapsize": "492830720"})
                 # Pick 3 hosts and deploy Zookeeper Server role
                 for host in random.sample(hosts, 3 if len(hosts) >= 3 else 1):
-                    cdh.create_service_role(service, rcg.roleType, host)
+                    initVar.cdh.create_service_role(service, rcg.roleType, host)
 
         # init_zookeeper not required as the API performs this when adding Zookeeper
         # initVar.check.status_for_command("Waiting for ZooKeeper Service to initialize", service.init_zookeeper())

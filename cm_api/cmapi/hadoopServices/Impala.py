@@ -15,7 +15,7 @@ def impalaSetup(enable_llama=False):
     api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password, version=initVar.cmx.api_version)
     cluster = api.get_cluster(initVar.cmx.cluster_name)
     service_type = "IMPALA"
-    if cdh.get_service_type(service_type) is None:
+    if initVar.cdh.get_service_type(service_type) is None:
         print "> %s" % service_type
         service_name = "impala"
         print "Create %s service" % service_name
@@ -24,7 +24,7 @@ def impalaSetup(enable_llama=False):
         hosts = initVar.manager.get_hosts()
 
         # Service-Wide
-        service.update_config(cdh.dependencies_for(service))
+        service.update_config(initVar.cdh.dependencies_for(service))
 
         # Role Config Group equivalent to Service Default Group
         for rcg in [x for x in service.get_all_role_config_groups()]:
@@ -34,11 +34,11 @@ def impalaSetup(enable_llama=False):
                                    "scratch_dirs": "/data/impala/impalad"})
 
         for role_type in ['CATALOGSERVER', 'STATESTORE']:
-            cdh.create_service_role(service, role_type, random.choice(hosts))
+            initVar.cdh.create_service_role(service, role_type, random.choice(hosts))
 
         # Install ImpalaD
         for host in hosts:
-            cdh.create_service_role(service, "IMPALAD", host)
+            initVar.cdh.create_service_role(service, "IMPALAD", host)
 
         initVar.check.status_for_command("Creating Impala user directory", service.create_impala_user_dir())
         # Impala will be started/stopped when we enable_llama_rm
@@ -47,7 +47,7 @@ def impalaSetup(enable_llama=False):
 
         # Enable YARN and Impala Integrated Resource Management
         # http://www.cloudera.com/content/www/en-us/documentation/enterprise/latest/topics/admin_llama.html
-        yarn = cdh.get_service_type('YARN')
+        yarn = initVar.cdh.get_service_type('YARN')
         if yarn is not None and enable_llama is True:
             # enable cgroup-based resource management for all hosts with NodeManager roles.
             cm = api.get_cloudera_manager()

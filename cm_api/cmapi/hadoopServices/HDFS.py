@@ -15,7 +15,7 @@ def hdfsSetup():
     api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password, version=initVar.cmx.api_version)
     cluster = api.get_cluster(initVar.cmx.cluster_name)
     service_type = "HDFS"
-    if cdh.get_service_type(service_type) is None:
+    if initVar.cdh.get_service_type(service_type) is None:
         print "> %s" % service_type
         service_name = "hdfs"
         print "Create %s service" % service_name
@@ -24,7 +24,7 @@ def hdfsSetup():
         hosts = initVar.manager.get_hosts()
 
         # Service-Wide
-        service_config = cdh.dependencies_for(service)
+        service_config = initVar.cdh.dependencies_for(service)
         service_config.update({"dfs_replication": "3",
                                "dfs_block_local_path_access_user": "impala,hbase,mapred,spark"})
         service.update_config(service_config)
@@ -38,7 +38,7 @@ def hdfsSetup():
                                    "dfs_namenode_handler_count": "30",
                                    "dfs_namenode_service_handler_count": "30",
                                    "dfs_namenode_servicerpc_address": "8022"})
-                cdh.create_service_role(service, rcg.roleType, [x for x in hosts if x.id == 0][0])
+                initVar.cdh.create_service_role(service, rcg.roleType, [x for x in hosts if x.id == 0][0])
             if rcg.roleType == "SECONDARYNAMENODE":
                 # hdfs-SECONDARYNAMENODE - Default Group
                 rcg.update_config({"fs_checkpoint_dir_list": "/data/dfs/snn",
@@ -48,7 +48,7 @@ def hdfsSetup():
                                               [x.hostRef.hostId for x in service.get_roles_by_type("NAMENODE")]]) \
                     if len(hosts) > 1 else random.choice(hosts)
 
-                cdh.create_service_role(service, rcg.roleType, secondary_nn)
+                initVar.cdh.create_service_role(service, rcg.roleType, secondary_nn)
 
             if rcg.roleType == "DATANODE":
                 # hdfs-DATANODE - Default Group
@@ -67,10 +67,10 @@ def hdfsSetup():
 
         for role_type in ['DATANODE', 'GATEWAY']:
             for host in initVar.manager.get_hosts(include_cm_host=(role_type == 'GATEWAY')):
-                cdh.create_service_role(service, role_type, host)
+                initVar.cdh.create_service_role(service, role_type, host)
 
         # Example of deploy_client_config. Recommended to Deploy Cluster wide client config.
-        # cdh.deploy_client_config_for(service)
+        # initVar.cdh.deploy_client_config_for(service)
 
         nn_role_type = service.get_roles_by_type("NAMENODE")[0]
         commands = service.format_hdfs(nn_role_type.name)

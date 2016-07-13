@@ -13,7 +13,7 @@ def sqoopSetup():
     api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password, version=initVar.cmx.api_version)
     cluster = api.get_cluster(initVar.cmx.cluster_name)
     service_type = "SQOOP"
-    if cdh.get_service_type(service_type) is None:
+    if initVar.cdh.get_service_type(service_type) is None:
         print "> %s" % service_type
         service_name = "sqoop"
         print "Create %s service" % service_name
@@ -22,14 +22,14 @@ def sqoopSetup():
         hosts = initVar.manager.get_hosts()
 
         # Service-Wide
-        service.update_config(cdh.dependencies_for(service))
+        service.update_config(initVar.cdh.dependencies_for(service))
 
         # Role Config Group equivalent to Service Default Group
         for rcg in [x for x in service.get_all_role_config_groups()]:
             if rcg.roleType == "SQOOP_SERVER":
                 rcg.update_config({"sqoop_java_heapsize": "492830720"})
 
-        cdh.create_service_role(service, "SQOOP_SERVER", [x for x in hosts if x.id == 0][0])
+        initVar.cdh.create_service_role(service, "SQOOP_SERVER", [x for x in hosts if x.id == 0][0])
 
         initVar.check.status_for_command("Creating Sqoop 2 user directory", service.create_sqoop_user_dir())
         # CDH Version check if greater than 5.3.0
@@ -48,7 +48,7 @@ def sqoopclientSetup():
     api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password, version=initVar.cmx.api_version)
     cluster = api.get_cluster(initVar.cmx.cluster_name)
     service_type = "SQOOP_CLIENT"
-    if cdh.get_service_type(service_type) is None:
+    if initVar.cdh.get_service_type(service_type) is None:
         print "> %s" % service_type
         service_name = "sqoop_client"
         print "Create %s service" % service_name
@@ -60,7 +60,7 @@ def sqoopclientSetup():
         service.update_config({})
 
         for host in initVar.manager.get_hosts(include_cm_host=True):
-            cdh.create_service_role(service, "GATEWAY", host)
+            initVar.cdh.create_service_role(service, "GATEWAY", host)
 
             # Example of deploy_client_config. Recommended to Deploy Cluster wide client config.
-            # cdh.deploy_client_config_for(service)
+            # initVar.cdh.deploy_client_config_for(service)
