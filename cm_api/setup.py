@@ -9,9 +9,9 @@ def main():
     add_hosts_to_cluster()
 
     # Deploy CDH Parcel and GPL Extra Parcel skip if they are ACTIVATED
-    api = ApiResource(server_host=api.cm_server, username=api.username, password=api.password, version=api.api_version)
-    cluster = api.get_cluster(api.cluster_name)
-    for cdh_parcel in api.parcel:
+    api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password, version=cmx.api_version)
+    cluster = api.get_cluster(cmx.cluster_name)
+    for cdh_parcel in cmx.parcel:
         print "> Parcel action for parcel: [ %s-%s ]" % (cdh_parcel['product'], cdh_parcel['version'])
         parcel = cluster.get_parcel(product=cdh_parcel['product'], version=cdh_parcel['version'])
         if "ACTIVATED" not in parcel.stage:
@@ -27,14 +27,14 @@ def main():
 
     # Skip MGMT role installation if amon_password and rman_password password are False
     mgmt_roles = ['SERVICEMONITOR', 'ALERTPUBLISHER', 'EVENTSERVER', 'HOSTMONITOR']
-    if api.amon_password and api.rman_password:
+    if cmx.amon_password and cmx.rman_password:
         if manager.licensed():
             mgmt_roles.append('REPORTSMANAGER')
         manager(*mgmt_roles).setup()
         manager(*mgmt_roles).start()
 
     # Upload license
-    if api.license_file:
+    if cmx.license_file:
         manager.upload_license()
 
     setup_zookeeper()
