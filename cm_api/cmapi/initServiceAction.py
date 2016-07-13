@@ -17,8 +17,8 @@ class ManagementActions:
 
     def __init__(self, *role_list):
         self._role_list = role_list
-        self._api = ApiResource(server_host=cmx.cm_server, username=cmx.username, password=cmx.password,
-                                version=cmx.api_version)
+        self._api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password,
+                                version=initVar.cmx.api_version)
         self._cm = self._api.get_cloudera_manager()
         try:
             self._service = self._cm.get_service()
