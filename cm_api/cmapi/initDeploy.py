@@ -3,7 +3,7 @@ import re
 import socket
 import urllib2
 import sys
-from cmGlobal import initVar
+import cmGlobal
 from cm_api.api_client import ApiResource
 from cm_api.endpoints.hosts import *
 
