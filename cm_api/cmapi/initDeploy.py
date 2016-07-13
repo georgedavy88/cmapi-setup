@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import re
 import socket
 import urllib2
 import sys
