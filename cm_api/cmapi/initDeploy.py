@@ -67,12 +67,8 @@ def add_hosts_to_cluster():
     host_list = list(set([socket.getfqdn(x) for x in initVar.cmx.host_names] + [socket.getfqdn(initVar.cmx.cm_server)]) -
                      set([x.hostname for x in api.get_all_hosts()]))
     if host_list:
-        cmd = cm.host_install(user_name=initVar.cmx.ssh_root_user, host_names=host_list, password=initVar.cmx.ssh_root_password, private_key=initVar.cmx.ssh_private_key, unlimited_jce=False)
+        cmd = cm.host_install(user_name=initVar.cmx.ssh_root_user, host_names=host_list, password=initVar.cmx.ssh_root_password, private_key=initVar.cmx.ssh_private_key, unlimited_jce=True)
 
-        # TODO: Temporary fix to flag for unlimited strength JCE policy files installation (If unset, defaults to false)
-        # host_install_args = {"userName": initVar.cmx.ssh_root_user, "hostNames": host_list, "password": initVar.cmx.ssh_root_password,
-        #                     "privateKey": initVar.cmx.ssh_private_key, "unlimitedJCE": True}
-        # cmd = cm._cmd('hostInstall', data=host_install_args)
         print "Installing host(s) to cluster '%s' - [ http://%s:7180/cmf/command/%s/details ]" % \
               (socket.getfqdn(initVar.cmx.cm_server), initVar.cmx.cm_server, cmd.id)
         initVar.check.status_for_command("Hosts: %s " % host_list, cmd)
