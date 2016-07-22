@@ -68,7 +68,7 @@ def add_hosts_to_cluster():
                      set([x.hostname for x in api.get_all_hosts()]))
     print initVar.cmx.ssh_root_user
     if host_list:
-        cmd = cm.host_install(user_name=initVar.cmx.ssh_root_user, host_names=host_list, password=initVar.cmx.ssh_root_password, private_key=initVar.cmx.ssh_private_key, unlimited_jce=True)
+        cmd = cm.host_install(user_name=initVar.cmx.ssh_root_user, host_names=host_list, password=None, private_key=initVar.cmx.ssh_private_key, unlimited_jce=True)
 
         print "Installing host(s) to cluster '%s' - [ http://%s:7180/cmf/command/%s/details ]" % \
               (socket.getfqdn(initVar.cmx.cm_server), initVar.cmx.cm_server, cmd.id)
