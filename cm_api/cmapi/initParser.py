@@ -74,7 +74,7 @@ def parse_options():
         s.close()
         exit(1)
 
-    config_options.update({'cm_services': [CONFIG.get("CLUSTER", "cluster.services").split(',')]})
+    #config_options.update({'cm_services': [CONFIG.get("CLUSTER", "cluster.services").split(',')]})
     #print "Services to be added ".join(config_options['cm_services'])
     config_options.update({'cluster_version': 'CDH5'})
     api_version = get_cm_api_version(config_options['cm_server'],config_options['username'],config_options['password'])
