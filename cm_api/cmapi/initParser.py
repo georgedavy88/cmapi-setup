@@ -44,7 +44,7 @@ def parse_options():
         client.set_basic_auth(username, password, "Cloudera Manager")
         client.set_headers({"Content-Type": "application/json"})
         return client.execute("GET", "/version").read().strip('v')
-            
+
     CONFIG = ConfigParser.ConfigParser()
     CONFIG.read("cm_config.ini")
 
@@ -100,7 +100,7 @@ def parse_options():
         exit(1)
 
     config_options.update({'cm_services': [CONFIG.get("CLUSTER", "cluster.services").split(',')]})
-    print "Services to be added ".join(config_options['cm_services'])
+    #print "Services to be added ".join(config_options['cm_services'])
 
     api_version = get_cm_api_version(config_options['cm_server'],config_options['username'],config_options['password'])
     print "CM API version: %s" % api_version
