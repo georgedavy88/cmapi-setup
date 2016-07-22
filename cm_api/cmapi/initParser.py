@@ -227,4 +227,4 @@ def parse_options():
 
     # Uncomment here to see cmx configuration options
     # print config_options
-    return options
+    return True
