@@ -36,8 +36,8 @@ def main():
         initVar.manager(*mgmt_roles).start()
 
     # Upload license
-    if initVar.cmx.license_file:
-        initVar.manager.upload_license()
+#    if initVar.cmx.license_file:
+#        initVar.manager.upload_license()
 
     zookeeperSetup()
     hdfsSetup()

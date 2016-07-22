@@ -28,13 +28,13 @@ def init_cluster():
             raise Exception("Invalid manifest.json")
 
     # Install CDH5 latest version
-    repo_url = ["%s/cdh5/parcels/%s" % (initVar.cmx.archive_url, initVar.cmx.cdh_version)]
+    repo_url = ["/cdh5/parcels/%s" % ('http://archive.cloudera.com', initVar.cmx.cdh_version)]
     print "CDH5 Parcel URL: %s" % repo_url[0]
     initVar.cmx.parcel.append(manifest_to_dict(repo_url[0] + "/manifest.json"))
 
     # Install GPLEXTRAS5 to match CDH5 version
     repo_url.append('%s/gplextras5/parcels/%s' %
-                    (initVar.cmx.archive_url, initVar.cmx.parcel[0]['version'].split('-')[0]))
+                    ('http://archive.cloudera.com', initVar.cmx.parcel[0]['version'].split('-')[0]))
     print "GPL Extras parcel URL: %s" % repo_url[1]
     initVar.cmx.parcel.append(manifest_to_dict(repo_url[1] + "/manifest.json"))
 
