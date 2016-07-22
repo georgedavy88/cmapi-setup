@@ -76,10 +76,11 @@ def parse_options():
 
     config_options  = {'username': 'admin','password': 'admin','parcel': []}
     config_options.update({'ssh_root_password': CONFIG.get("SSH", "ssh.password")})
+    config_options.update({'ssh_private_key': CONFIG.get("SSH", "ssh.privateKey")})
     config_options.update({'ssh_root_user': CONFIG.get("SSH", "ssh.user")})
+    print config_options['ssh_private_key']
     with open(CONFIG.get("SSH", "ssh.privateKey"), 'r') as f:
-        config_options.update({'ssh_private_key': f.read()})
-#        config_options['ssh_private_key'] = f.read()
+        config_options['ssh_private_key'] = f.read()
     print config_options['ssh_private_key']
     config_options.update({'cluster_name': CONFIG.get("CLUSTER", "cluster.name")})
     CLUSTER_HOSTS       = CONFIG.get("CLUSTER", "cluster.hosts")
