@@ -67,8 +67,7 @@ def add_hosts_to_cluster():
     host_list = list(set([socket.getfqdn(x) for x in initVar.cmx.host_names] + [socket.getfqdn(initVar.cmx.cm_server)]) -
                      set([x.hostname for x in api.get_all_hosts()]))
     if host_list:
-        cmd = cm.host_install(user_name=initVar.cmx.ssh_root_user, host_names=host_list,
-                              password=initVar.cmx.ssh_root_password, private_key=initVar.cmx.ssh_private_key, unlimited_jce=True)
+        cmd = cm.host_install(user_name=initVar.cmx.ssh_root_user, host_names=host_list, password=initVar.cmx.ssh_root_password, private_key=initVar.cmx.ssh_private_key, unlimited_jce=False)
 
         # TODO: Temporary fix to flag for unlimited strength JCE policy files installation (If unset, defaults to false)
         # host_install_args = {"userName": initVar.cmx.ssh_root_user, "hostNames": host_list, "password": initVar.cmx.ssh_root_password,
