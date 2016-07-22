@@ -54,7 +54,6 @@ def parse_options():
     config_options.update({'ssh_root_user': CONFIG.get("SSH", "ssh.user")})
     with open(CONFIG.get("SSH", "ssh.privateKey"), 'r') as f:
         config_options['ssh_private_key'] = f.read()
-    print config_options['ssh_private_key']
     config_options.update({'cluster_name': CONFIG.get("CLUSTER", "cluster.name")})
     CLUSTER_HOSTS       = CONFIG.get("CLUSTER", "cluster.hosts")
     for host in CLUSTER_HOSTS.split(','):
