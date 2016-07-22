@@ -12,39 +12,38 @@ from cm_api.endpoints.services import ApiService
 
 
 def parse_options():
-
-        def hostname_resolves(hostname):
-            """
-            Check if hostname resolves
-            :param hostname:
-            :return:
-            """
-            try:
-                if socket.gethostbyname(hostname) == '0.0.0.0':
-                    print "Error [{'host': '%s', 'fqdn': '%s'}]" % \
-                          (socket.gethostbyname(hostname), socket.getfqdn(hostname))
-                    return False
-                else:
-                    print "Success [{'host': '%s', 'fqdn': '%s'}]" % \
-                          (socket.gethostbyname(hostname), socket.getfqdn(hostname))
-                    return True
-            except socket.error:
-                print "Error 'host': '%s'" % hostname
+    def hostname_resolves(hostname):
+        """
+        Check if hostname resolves
+        :param hostname:
+        :return:
+        """
+        try:
+            if socket.gethostbyname(hostname) == '0.0.0.0':
+                print "Error [{'host': '%s', 'fqdn': '%s'}]" % \
+                      (socket.gethostbyname(hostname), socket.getfqdn(hostname))
                 return False
+            else:
+                print "Success [{'host': '%s', 'fqdn': '%s'}]" % \
+                      (socket.gethostbyname(hostname), socket.getfqdn(hostname))
+                return True
+        except socket.error:
+            print "Error 'host': '%s'" % hostname
+            return False
 
-        def get_cm_api_version(cm_server, username, password):
-            """
-            Get supported API version from CM
-            :param cm_server:
-            :param username:
-            :param password:
-            :return version:
-            """
-            base_url = "%s://%s:%s/api" % ("http", cm_server, 7180)
-            client = HttpClient(base_url, exc_class=ApiException)
-            client.set_basic_auth(username, password, "Cloudera Manager")
-            client.set_headers({"Content-Type": "application/json"})
-            return client.execute("GET", "/version").read().strip('v')
+    def get_cm_api_version(cm_server, username, password):
+        """
+        Get supported API version from CM
+        :param cm_server:
+        :param username:
+        :param password:
+        :return version:
+        """
+        base_url = "%s://%s:%s/api" % ("http", cm_server, 7180)
+        client = HttpClient(base_url, exc_class=ApiException)
+        client.set_basic_auth(username, password, "Cloudera Manager")
+        client.set_headers({"Content-Type": "application/json"})
+        return client.execute("GET", "/version").read().strip('v')
             
     CONFIG = ConfigParser.ConfigParser()
     CONFIG.read("cm_config.ini")
