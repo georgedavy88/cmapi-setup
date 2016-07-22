@@ -66,7 +66,6 @@ def add_hosts_to_cluster():
     # deploy agents into host_list
     host_list = list(set([socket.getfqdn(x) for x in initVar.cmx.host_names] + [socket.getfqdn(initVar.cmx.cm_server)]) -
                      set([x.hostname for x in api.get_all_hosts()]))
-    print host_list
     if host_list:
         cmd = cm.host_install(user_name=initVar.cmx.ssh_root_user, host_names=host_list,
                               password=initVar.cmx.ssh_root_password, private_key=initVar.cmx.ssh_private_key, unlimited_jce=True)
