@@ -19,8 +19,7 @@ def init_cluster():
 
     def manifest_to_dict(manifest_json):
         if manifest_json:
-            dir_list = json.load(
-                urllib2.urlopen(manifest_json))['parcels'][0]['parcelName']
+            dir_list = json.load(urllib2.urlopen(manifest_json))['parcels'][0]['parcelName']
             parcel_part = re.match(r"^(.*?)-(.*)-(.*?)$", dir_list).groups()
             print "{'product': %s, 'version': %s}" % (str(parcel_part[0]).upper(), str(parcel_part[1]).lower())
             return {'product': str(parcel_part[0]).upper(), 'version': str(parcel_part[1]).lower()}

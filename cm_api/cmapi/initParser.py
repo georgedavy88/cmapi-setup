@@ -80,7 +80,7 @@ def parse_options():
     print "CM API version: %s" % api_version
     config_options.update({'api_version': api_version})
 
-    config_options.update({'cdh_version': 'latest'})
+    config_options.update({'cdh_version': '5'})
 
     config_options.update({'license_file': CONFIG.get("LICENSE", "license.file.cm")})
 
