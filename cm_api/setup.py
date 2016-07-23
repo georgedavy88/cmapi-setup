@@ -10,9 +10,6 @@ def main():
     parse_options()
     init_cluster()
     add_hosts_to_cluster()
-    CONFIG = ConfigParser.ConfigParser()
-    CONFIG.read("cm_config.ini")
-    ZOOKEEPER_HOSTS = CONFIG.get("SERVICE", "service.zookeeper.hosts").split(',')
     # Deploy CDH Parcel and GPL Extra Parcel skip if they are ACTIVATED
     api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password, version=initVar.cmx.api_version)
     cluster = api.get_cluster(initVar.cmx.cluster_name)
@@ -43,7 +40,7 @@ def main():
 #        initVar.manager.upload_license()
 
     # CDH 5 - CORE HADOOP
-     zookeeperSetup(ZOOKEEPER_HOSTS)
+     zookeeperSetup()
      hdfsSetup()
      yarnSetup()
      hiveSetup()

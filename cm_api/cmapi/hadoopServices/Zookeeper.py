@@ -4,13 +4,16 @@ import initVar
 from cm_api.api_client import ApiResource
 from cm_api.endpoints.hosts import *
 
-def zookeeperSetup(zookeeper_hosts):
+def zookeeperSetup():
     """
     Zookeeper
     > Waiting for ZooKeeper Service to initialize
     Starting ZooKeeper Service
     :return:
     """
+    CONFIG = ConfigParser.ConfigParser()
+    CONFIG.read("cm_config.ini")
+    ZOOKEEPER_HOSTS = CONFIG.get("SERVICE", "service.zookeeper.hosts").split(',')
     api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password, version=initVar.cmx.api_version)
     cluster = api.get_cluster(initVar.cmx.cluster_name)
     service_type = "ZOOKEEPER"
@@ -20,7 +23,7 @@ def zookeeperSetup(zookeeper_hosts):
         print "Create %s service" % service_name
         cluster.create_service(service_name, service_type)
         service = cluster.get_service(service_name)
-        hosts = zookeeper_hosts
+        hosts = ZOOKEEPER_HOSTS
         service.update_config({"zookeeper_datadir_autocreate": False})
 
         # Role Config Group equivalent to Service Default Group
