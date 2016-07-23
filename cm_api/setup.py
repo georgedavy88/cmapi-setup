@@ -43,12 +43,12 @@ def main():
 #        initVar.manager.upload_license()
 
     # CDH 5 - CORE HADOOP
-     zookeeperSetup(ZOOKEEPER_HOSTS)
-     hdfsSetup()
-     yarnSetup()
-     hiveSetup()
-     oozieSetup()
-     hueSetup()
+    zookeeperSetup(ZOOKEEPER_HOSTS)
+    hdfsSetup()
+    yarnSetup()
+    hiveSetup()
+    oozieSetup()
+    hueSetup()
 
     # CUSTOM SERVICES
 
