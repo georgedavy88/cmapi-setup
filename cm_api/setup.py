@@ -38,7 +38,7 @@ def main():
     # Upload license
     if initVar.cmx.license_file:
         initVar.manager.upload_license()
-
+#jyvjhvjh
     # CDH 5 - CORE HADOOP
     zookeeperSetup()
     hdfsSetup()
