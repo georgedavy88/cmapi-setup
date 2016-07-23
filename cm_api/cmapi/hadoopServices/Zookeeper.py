@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import random
+import ConfigParser
 import initVar
 from cm_api.api_client import ApiResource
 from cm_api.endpoints.hosts import *
