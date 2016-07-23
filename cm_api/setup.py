@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 #Author - George Davy
+import ConfigParser
 from cmapi import *
 from cmapi.initDeploy import parcel_action
 from cmapi.hadoopServices import *
@@ -9,7 +10,9 @@ def main():
     parse_options()
     init_cluster()
     add_hosts_to_cluster()
-
+    CONFIG = ConfigParser.ConfigParser()
+    CONFIG.read("cm_config.ini")
+    ZOOKEEPER_HOSTS = CONFIG.get("SERVICE", "service.zookeeper.hosts").split(',')
     # Deploy CDH Parcel and GPL Extra Parcel skip if they are ACTIVATED
     api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password, version=initVar.cmx.api_version)
     cluster = api.get_cluster(initVar.cmx.cluster_name)
@@ -39,16 +42,26 @@ def main():
 #    if initVar.cmx.license_file:
 #        initVar.manager.upload_license()
 
-    zookeeperSetup()
-    hdfsSetup()
-    hbaseSetup()
-    yarnSetup()
-    flumeSetup()
-    sparkonyarnSetup()
-    hiveSetup()
-    impalaSetup()
-    oozieSetup()
-    hueSetup()
+    # CDH 5 - CORE HADOOP
+     zookeeperSetup(ZOOKEEPER_HOSTS)
+     hdfsSetup()
+     yarnSetup()
+     hiveSetup()
+     oozieSetup()
+     hueSetup()
+
+    # CUSTOM SERVICES
+
+#    zookeeperSetup() #core
+#    hdfsSetup()     #core
+#    hbaseSetup()
+#    yarnSetup()     #core
+#    flumeSetup()
+#    sparkonyarnSetup()
+#    hiveSetup() #core
+#    impalaSetup()
+#    oozieSetup() #core
+#    hueSetup()  #core
 
     initVar.cdh.restart_cluster()
 

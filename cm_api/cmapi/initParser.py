@@ -73,8 +73,6 @@ def parse_options():
         s.close()
         exit(1)
 
-    #config_options.update({'cm_services': [CONFIG.get("CLUSTER", "cluster.services").split(',')]})
-    #print "Services to be added ".join(config_options['cm_services'])
     config_options.update({'cluster_version': 'CDH5'})
     api_version = get_cm_api_version(config_options['cm_server'],config_options['username'],config_options['password'])
     print "CM API version: %s" % api_version
@@ -84,7 +82,7 @@ def parse_options():
 
     config_options.update({'license_file': CONFIG.get("LICENSE", "license.file.cm")})
 
-    config_options.update({'kerberos': {'kdc_host': None, 'security_realm': None,'kdc_user': None, 'kdc_password': None}})
+    #config_options.update({'kerberos': {'kdc_host': None, 'security_realm': None,'kdc_user': None, 'kdc_password': None}})
 
     # Management services password. They are required when adding Management services
     initVar.manager = ManagementActions
