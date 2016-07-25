@@ -3,6 +3,7 @@ import socket
 import hashlib
 import os
 import sys
+import ConfigParser
 from hadoopServices import initVar
 from cm_api.api_client import ApiResource, ApiException
 from cm_api.endpoints.hosts import *
@@ -184,15 +185,6 @@ class ManagementActions:
 
     @classmethod
     def get_hosts(cls, include_cm_host=False):
-        """
-        because api.get_all_hosts() returns all the hosts as instanceof ApiHost: hostId hostname ipAddress
-        and cluster.list_hosts() returns all the cluster hosts as instanceof ApiHostRef: hostId
-        we only need Cluster hosts with instanceof ApiHost: hostId hostname ipAddress + md5host
-        preserve host order in -w
-        hashlib.md5(host.hostname).hexdigest()
-        attributes = {'id': None, 'hostId': None, 'hostname': None, 'md5host': None, 'ipAddress': None, }
-        return a list of hosts
-        """
         api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password,
                           version=initVar.cmx.api_version)
 
@@ -213,6 +205,28 @@ class ManagementActions:
             })
 
         return [type('', (), x) for x in hosts]
+
+    @classmethod
+    def get_service_hosts(cls):
+        api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password,
+                          version=initVar.cmx.api_version)
+        CONFIG = ConfigParser.ConfigParser()
+        CONFIG.read("cm_config.ini")
+        ZOOKEEPER_HOSTS = CONFIG.get("SERVICE", "service.zookeeper.hosts").split(',')
+
+        service_hosts = set(enumerate(ZOOKEEPER_HOSTS))
+        s_hosts = []
+        for idx, host in service_hosts:
+            _host = [x for x in api.get_all_hosts() if x.ipAddress == socket.gethostbyname(host)][0]
+            s_hosts.append({
+                'id': idx,
+                'hostId': _host.hostId,
+                'hostname': _host.hostname,
+                'md5host': hashlib.md5(_host.hostname).hexdigest(),
+                'ipAddress': _host.ipAddress,
+            })
+
+        return [type('', (), x) for x in s_hosts]
 
     @classmethod
     def restart_management(cls):
