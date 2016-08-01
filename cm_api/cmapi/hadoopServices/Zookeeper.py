@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import random
-import ConfigParser
 import initVar
 from cm_api.api_client import ApiResource
 from cm_api.endpoints.hosts import *
@@ -12,9 +11,6 @@ def zookeeperSetup():
     Starting ZooKeeper Service
     :return:
     """
-    CONFIG = ConfigParser.ConfigParser()
-    CONFIG.read("cm_config.ini")
-    ZOOKEEPER_HOSTS = CONFIG.get("SERVICE", "service.zookeeper.hosts").split(',')
     api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password, version=initVar.cmx.api_version)
     cluster = api.get_cluster(initVar.cmx.cluster_name)
     service_type = "ZOOKEEPER"
