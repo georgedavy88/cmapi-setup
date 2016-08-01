@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import random
 import initVar
+import ConfigParser
 from cm_api.api_client import ApiResource
 from cm_api.endpoints.hosts import *
 
@@ -15,6 +16,8 @@ def hdfsSetup():
     api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password, version=initVar.cmx.api_version)
     cluster = api.get_cluster(initVar.cmx.cluster_name)
     service_type = "HDFS"
+    CONFIG = ConfigParser.ConfigParser()
+    CONFIG.read("cm_config.ini")
     if initVar.cdh.get_service_type(service_type) is None:
         print "> %s" % service_type
         service_name = "hdfs"
@@ -38,7 +41,9 @@ def hdfsSetup():
                                    "dfs_namenode_handler_count": "30",
                                    "dfs_namenode_service_handler_count": "30",
                                    "dfs_namenode_servicerpc_address": "8022"})
-                initVar.cdh.create_service_role(service, rcg.roleType, [x for x in hosts if x.id == 0][0])
+                primary_nn = [x for x in hosts if x.ipAddress == socket.gethostbyname(CONFIG.get("SERVICE", "service.namenode.host"))][0]
+                #initVar.cdh.create_service_role(service, rcg.roleType, [x for x in hosts if x.id == 0][0])
+                initVar.cdh.create_service_role(service, rcg.roleType, primary_nn)
             if rcg.roleType == "SECONDARYNAMENODE":
                 # hdfs-SECONDARYNAMENODE - Default Group
                 rcg.update_config({"fs_checkpoint_dir_list": "/data/dfs/snn",

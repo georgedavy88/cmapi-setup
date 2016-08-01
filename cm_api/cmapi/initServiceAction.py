@@ -207,7 +207,7 @@ class ManagementActions:
         return [type('', (), x) for x in hosts]
 
     @classmethod
-    def get_service_hosts(cls,service_name):
+    def get_zookeeper_hosts(cls):
         api = ApiResource(server_host=initVar.cmx.cm_server, username=initVar.cmx.username, password=initVar.cmx.password,
                           version=initVar.cmx.api_version)
         CONFIG = ConfigParser.ConfigParser()
