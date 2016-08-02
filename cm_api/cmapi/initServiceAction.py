@@ -226,6 +226,7 @@ class ManagementActions:
             })
 
         return [type('', (), x) for x in s_hosts]
+    
 
     @classmethod
     def restart_management(cls):

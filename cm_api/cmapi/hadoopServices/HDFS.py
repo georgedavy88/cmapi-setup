@@ -50,9 +50,7 @@ def hdfsSetup():
                 rcg.update_config({"fs_checkpoint_dir_list": "/data/dfs/snn",
                                    "secondary_namenode_java_heapsize": "1073741824"})
                 # chose a server that it's not NN, easier to enable HDFS-HA later
-                secondary_nn = random.choice([host for host in hosts if host.hostId not in
-                                              [x.hostRef.hostId for x in service.get_roles_by_type("NAMENODE")]]) \
-                    if len(hosts) > 1 else random.choice(hosts)
+                secondary_nn = [x for x in hosts if x.ipAddress == socket.gethostbyname(CONFIG.get("SERVICE", "service.secondary.namenode.host"))][0]
 
                 initVar.cdh.create_service_role(service, rcg.roleType, secondary_nn)
 
@@ -64,16 +62,24 @@ def hdfsSetup():
                                    "dfs_datanode_du_reserved": "3218866585",
                                    "dfs_datanode_failed_volumes_tolerated": "0",
                                    "dfs_datanode_max_locked_memory": "316669952", })
+
+                dnode_hosts = [x for x in hosts if x.ipAddress == socket.gethostbyname(set(enumerate(CONFIG.get("SERVICE", "service.datanode.hosts"))))][0]
+                for dnode in dnode_hosts:
+                    initVar.cdh.create_service_role(service, role_type, dnode)
+
             if rcg.roleType == "BALANCER":
                 # hdfs-BALANCER - Default Group
                 rcg.update_config({"balancer_java_heapsize": "492830720"})
             if rcg.roleType == "GATEWAY":
                 # hdfs-GATEWAY - Default Group
                 rcg.update_config({"dfs_client_use_trash": True})
+                gateway_hosts = [x for x in hosts if x.ipAddress == socket.gethostbyname(set(enumerate(CONFIG.get("SERVICE", "service.gateway.hosts"))))][0]
+                for gnode in gateway_hosts:
+                    initVar.cdh.create_service_role(service, role_type, gnodes)
 
-        for role_type in ['DATANODE', 'GATEWAY']:
-            for host in initVar.manager.get_hosts(include_cm_host=(role_type == 'GATEWAY')):
-                initVar.cdh.create_service_role(service, role_type, host)
+        #for role_type in ['DATANODE', 'GATEWAY']:
+        #    for host in initVar.manager.get_hosts(include_cm_host=(role_type == 'GATEWAY')):
+        #        initVar.cdh.create_service_role(service, role_type, host)
 
         # Example of deploy_client_config. Recommended to Deploy Cluster wide client config.
         # initVar.cdh.deploy_client_config_for(service)
